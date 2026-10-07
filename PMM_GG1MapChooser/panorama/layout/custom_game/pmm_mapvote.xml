@@ -1,0 +1,182 @@
+<root>
+	<styles>
+		<include src="s2r://panorama/styles/csgostyles.vcss_c" />
+		<include src="s2r://panorama/styles/custom_game/pmm_mapvote.vcss_c" />
+		<include src="s2r://panorama/styles/custom_game/pmm_mapvote_maps.vcss_c" />
+	</styles>
+	<Panel class="mv-screen" hittest="false">
+		<Panel id="mv-root" class="mv-root mv-hidden pos-right mode-click" hittest="false">
+			<Panel class="mv-vote">
+				<Panel class="mv-head">
+					<Panel class="mv-headtext" hittest="false">
+						<Label class="mv-brand stratum-bold-tf" text="{s:mv_brand}" />
+						<Label class="mv-title stratum-bold-tf" text="{s:mv_title}" />
+					</Panel>
+					<Panel class="mv-timer" hittest="false">
+						<Panel class="mv-timer-ic" />
+						<Label class="mv-time stratum-bold-tf" text="{s:mv_time}" />
+					</Panel>
+					<Button id="mv-close" class="mv-x"><Label class="stratum-bold-tf" text="×" /></Button>
+				</Panel>
+				<Panel class="mv-tbar" hittest="false"><Panel id="mv-tfill" class="mv-tfill t20" hittest="false" /></Panel>
+				<Panel class="mv-rows">
+				<Button id="mv-row-0" class="mv-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="mv-art-0" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:name0}" />
+							<Label id="mv-badge-0" class="mv-badge stratum-bold-tf" text="{s:badge0}" />
+							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
+						</Panel>
+						<Panel class="mv-bar" hittest="false"><Panel id="mv-fill-0" class="mv-fill v0" hittest="false" /></Panel>
+					</Panel>
+					<Label class="mv-cnt stratum-bold-tf" text="{s:cnt0}" />
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="mv-row-1" class="mv-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="mv-art-1" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:name1}" />
+							<Label id="mv-badge-1" class="mv-badge stratum-bold-tf" text="{s:badge1}" />
+							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
+						</Panel>
+						<Panel class="mv-bar" hittest="false"><Panel id="mv-fill-1" class="mv-fill v0" hittest="false" /></Panel>
+					</Panel>
+					<Label class="mv-cnt stratum-bold-tf" text="{s:cnt1}" />
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="mv-row-2" class="mv-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="mv-art-2" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:name2}" />
+							<Label id="mv-badge-2" class="mv-badge stratum-bold-tf" text="{s:badge2}" />
+							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
+						</Panel>
+						<Panel class="mv-bar" hittest="false"><Panel id="mv-fill-2" class="mv-fill v0" hittest="false" /></Panel>
+					</Panel>
+					<Label class="mv-cnt stratum-bold-tf" text="{s:cnt2}" />
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="mv-row-3" class="mv-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="mv-art-3" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:name3}" />
+							<Label id="mv-badge-3" class="mv-badge stratum-bold-tf" text="{s:badge3}" />
+							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
+						</Panel>
+						<Panel class="mv-bar" hittest="false"><Panel id="mv-fill-3" class="mv-fill v0" hittest="false" /></Panel>
+					</Panel>
+					<Label class="mv-cnt stratum-bold-tf" text="{s:cnt3}" />
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="mv-row-4" class="mv-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="mv-art-4" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:name4}" />
+							<Label id="mv-badge-4" class="mv-badge stratum-bold-tf" text="{s:badge4}" />
+							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
+						</Panel>
+						<Panel class="mv-bar" hittest="false"><Panel id="mv-fill-4" class="mv-fill v0" hittest="false" /></Panel>
+					</Panel>
+					<Label class="mv-cnt stratum-bold-tf" text="{s:cnt4}" />
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="mv-row-5" class="mv-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="mv-art-5" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:name5}" />
+							<Label id="mv-badge-5" class="mv-badge stratum-bold-tf" text="{s:badge5}" />
+							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
+						</Panel>
+						<Panel class="mv-bar" hittest="false"><Panel id="mv-fill-5" class="mv-fill v0" hittest="false" /></Panel>
+					</Panel>
+					<Label class="mv-cnt stratum-bold-tf" text="{s:cnt5}" />
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="mv-row-6" class="mv-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="7" /></Panel>
+					<Panel id="mv-art-6" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:name6}" />
+							<Label id="mv-badge-6" class="mv-badge stratum-bold-tf" text="{s:badge6}" />
+							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
+						</Panel>
+						<Panel class="mv-bar" hittest="false"><Panel id="mv-fill-6" class="mv-fill v0" hittest="false" /></Panel>
+					</Panel>
+					<Label class="mv-cnt stratum-bold-tf" text="{s:cnt6}" />
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="mv-row-7" class="mv-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="8" /></Panel>
+					<Panel id="mv-art-7" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:name7}" />
+							<Label id="mv-badge-7" class="mv-badge stratum-bold-tf" text="{s:badge7}" />
+							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
+						</Panel>
+						<Panel class="mv-bar" hittest="false"><Panel id="mv-fill-7" class="mv-fill v0" hittest="false" /></Panel>
+					</Panel>
+					<Label class="mv-cnt stratum-bold-tf" text="{s:cnt7}" />
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="mv-row-8" class="mv-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="9" /></Panel>
+					<Panel id="mv-art-8" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:name8}" />
+							<Label id="mv-badge-8" class="mv-badge stratum-bold-tf" text="{s:badge8}" />
+							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
+						</Panel>
+						<Panel class="mv-bar" hittest="false"><Panel id="mv-fill-8" class="mv-fill v0" hittest="false" /></Panel>
+					</Panel>
+					<Label class="mv-cnt stratum-bold-tf" text="{s:cnt8}" />
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="mv-row-9" class="mv-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="10" /></Panel>
+					<Panel id="mv-art-9" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:name9}" />
+							<Label id="mv-badge-9" class="mv-badge stratum-bold-tf" text="{s:badge9}" />
+							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
+						</Panel>
+						<Panel class="mv-bar" hittest="false"><Panel id="mv-fill-9" class="mv-fill v0" hittest="false" /></Panel>
+					</Panel>
+					<Label class="mv-cnt stratum-bold-tf" text="{s:cnt9}" />
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				</Panel>
+				<Panel class="mv-foot" hittest="false">
+					<Label class="mv-hint stratum-medium-tf" text="{s:mv_hint}" />
+					<Label class="mv-voted stratum-medium-tf" text="{s:mv_voted}" />
+				</Panel>
+			</Panel>
+			<Panel id="mv-card" class="mv-card" hittest="false">
+				<Label class="mv-brand stratum-bold-tf" text="{s:mv_brand}" />
+				<Label class="mv-card-sub stratum-bold-tf" text="{s:card_sub}" />
+				<Panel id="mv-card-art" class="mv-card-art">
+					<Panel class="mv-card-check" />
+				</Panel>
+				<Panel class="mv-card-line">
+					<Label class="mv-card-title stratum-bold-tf" text="{s:card_title}" />
+					<Label id="mv-card-badge" class="mv-badge mv-card-badge stratum-bold-tf" text="{s:card_badge}" />
+				</Panel>
+			</Panel>
+		</Panel>
+	</Panel>
+</root>

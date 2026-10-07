@@ -1,0 +1,55 @@
+{
+  "Enabled": true,
+  "DisableFreeze": true,
+  "DefaultTitle": "Выбор карты",
+  "ShowVoteCount": true,
+  "ForceMenuType": "",
+  "CloseCheckInterval": 0.25,
+  "OpenGraceSeconds": 1.0,
+  "Debug": false,
+  "Vote": {
+    "Enabled": true,
+    "VoteInput": "Panorama",
+    "Position": "Right",
+    "FreezeTimeVote": true,
+    "FreezeTimeExtra": 3,
+    "ExtendFreezeDirect": true,
+    "FreezeTimeFallback": 15,
+    "ShowVoteCounts": true,
+    "ChatNumbers": true,
+    "ResultStyle": "NextMapCard",
+    "ResultSeconds": 5,
+    "CheckSeconds": 3,
+    "OpenDelay": 0.2,
+    "InputDelay": 0.2,
+    "LayoutPath": "panorama/layout/custom_game/pmm_mapvote.xml"
+  },
+  "Texts": {
+    "Brand": "★ PMM MAP VOTE",
+    "Title": "СЛЕДУЮЩАЯ КАРТА",
+    "HintClick": "Клик по карте или !1 – !{0} в чат",
+    "HintChat": "Пиши !1 – !{0} в чат",
+    "Voted": "{0} / {1} голосов",
+    "YourVote": "ТВОЙ ГОЛОС",
+    "Time": "{0}с",
+    "NextMap": "СЛЕДУЮЩАЯ КАРТА",
+    "Extended": "КАРТА ПРОДЛЕНА",
+    "Done": "Голосование завершено",
+    "AlreadyVoted": "Ты уже проголосовал. Сменить голос: !revote"
+  },
+  "Badges": {
+    "Classic": "#4caf50",
+    "Community": "#c86bfa",
+    "New": "#ff9800"
+  },
+  "Maps": {
+    "de_mirage": { "Title": "Mirage", "Image": "builtin", "Badge": "Classic" },
+    "de_inferno": { "Title": "Inferno", "Image": "builtin", "Badge": "Classic" },
+    "de_cache": { "Title": "Cache", "Image": "builtin", "Badge": "Community" }
+  },
+  "Specials": {
+    "extend": { "Title": "Продлить +{0} мин", "Icon": "clock" },
+    "novote": { "Title": "Не голосую", "Icon": "cancel" }
+  },
+  "ConfigVersion": 2
+}

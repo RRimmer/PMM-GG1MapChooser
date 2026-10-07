@@ -1,0 +1,32 @@
+/* PMM_GG1MapChooser: generated from PMM_GG1MapChooser.json (Maps, Badges). */
+/* Copy to <addon>/panorama/styles/custom_game/pmm_mapvote_maps.css and rebuild the addon. */
+
+.mi-unknown { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/random_png.vtex"); }
+.mi-ar_baggage { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/ar_baggage_png.vtex"); }
+.mi-ar_pool_day { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/ar_pool_day_png.vtex"); }
+.mi-ar_shoots { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/ar_shoots_png.vtex"); }
+.mi-ar_shoots_night { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/ar_shoots_night_png.vtex"); }
+.mi-cs_italy { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/cs_italy_png.vtex"); }
+.mi-cs_office { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/cs_office_png.vtex"); }
+.mi-cs_shelter { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/cs_shelter_png.vtex"); }
+.mi-de_ancient { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_ancient_png.vtex"); }
+.mi-de_ancient_night { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_ancient_night_png.vtex"); }
+.mi-de_anubis { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_anubis_png.vtex"); }
+.mi-de_boulder { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_boulder_png.vtex"); }
+.mi-de_cache { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_cache_png.vtex"); }
+.mi-de_debris { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_debris_png.vtex"); }
+.mi-de_dust { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_dust_png.vtex"); }
+.mi-de_dust2 { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_dust2_png.vtex"); }
+.mi-de_eldorado { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_eldorado_png.vtex"); }
+.mi-de_fachwerk { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_fachwerk_png.vtex"); }
+.mi-de_inferno { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_inferno_png.vtex"); }
+.mi-de_mirage { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_mirage_png.vtex"); }
+.mi-de_nuke { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_nuke_png.vtex"); }
+.mi-de_overpass { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_overpass_png.vtex"); }
+.mi-de_poseidon { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_poseidon_png.vtex"); }
+.mi-de_train { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_train_png.vtex"); }
+.mi-de_vertigo { background-image: url("s2r://panorama/images/map_icons/screenshots/360p/de_vertigo_png.vtex"); }
+
+.bd-classic { background-color: #4caf50; }
+.bd-community { background-color: #c86bfa; }
+.bd-new { background-color: #ff9800; }

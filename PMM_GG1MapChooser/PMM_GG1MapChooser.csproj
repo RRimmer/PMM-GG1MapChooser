@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>PMM_GG1MapChooser</AssemblyName>
+        <RootNamespace>PMM_GG1MapChooser</RootNamespace>
+        <Version>0.0.2</Version>
+        <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CounterStrikeSharp.API" Version="1.0.376">
+            <ExcludeAssets>runtime</ExcludeAssets>
+        </PackageReference>
+        <!-- MenuManagerApi.dll must live only in shared/MenuManagerApi -->
+        <ProjectReference Include="..\MenuManagerApi\MenuManagerApi.csproj">
+            <Private>false</Private>
+        </ProjectReference>
+        <!-- Lib.Harmony 2.4.2 (net10.0), same build SwiftlyS2 ships -->
+        <!-- Not copied next to the plugin dll: it goes to harmony\ and is loaded into the default context -->
+        <Reference Include="0Harmony">
+            <HintPath>lib\0Harmony.dll</HintPath>
+            <Private>false</Private>
+        </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="lib\0Harmony.dll" Link="harmony\0Harmony.dll" CopyToOutputDirectory="PreserveNewest"/>
+    </ItemGroup>
+
+</Project>
