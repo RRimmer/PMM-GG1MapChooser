@@ -8,6 +8,7 @@
 Bridge by **Rimmer** between [GG1MapChooser](https://github.com/ssypchenko/GG1MapChooser) 1.8.1 and [PanoramaMenuManager](https://github.com/RRimmer/PanoramaMenuManagerCS2) (MenuManagerCS2 1.2.03). GG1MapChooser is not changed: Harmony patches its WASD menu classes at runtime.
 
 Current version: **0.0.2**. Needs CounterStrikeSharp 1.0.376 (.NET 10), GG1MapChooser 1.8.1 and MenuManager 1.2.03.
+The panorama design is inspired by [EliteGames.Ro](https://elitegames.ro).
 
 - Every GG1 WASD menu (nominate, admin maps, yes/no vote) opens in MenuManager.
 - The end-of-map vote is its own panorama panel: map picture, name, badge, vote bar, counter, "your vote", timer and "N / M votes".
@@ -68,6 +69,7 @@ The changelog is in [CHANGELOG.md](CHANGELOG.md).
 Мост от **Rimmer** между [GG1MapChooser](https://github.com/ssypchenko/GG1MapChooser) 1.8.1 и [PanoramaMenuManager](https://github.com/RRimmer/PanoramaMenuManagerCS2) (MenuManagerCS2 1.2.03). GG1MapChooser не меняется: Harmony патчит его WASD-меню в рантайме.
 
 Текущая версия: **0.0.2**. Нужен CounterStrikeSharp 1.0.376 (.NET 10), GG1MapChooser 1.8.1 и MenuManager 1.2.03.
+Дизайн панорамы вдохновлён [EliteGames.Ro](https://elitegames.ro).
 
 - Любое WASD-меню GG1 (номинация, админ-карты, голосование да/нет) открывается в MenuManager.
 - Голосование в конце карты — отдельная панорамная панель: картинка карты, название, бейдж, полоса голосов, счётчик, «твой голос», таймер и «N / M голосов».
