@@ -1,6 +1,6 @@
 # PMM_GG1MapChooser
 
-<h2><a href="https://genesis-cs.space/menuconstructor/index.html">>>>Более подробная информация на сайте<<<</a></h2>
+<h2><a href="https://genesis-cs.space/menuconstructor/index.html">>>>More detailed information on the website<<<</a></h2>
 
 ![PMM GG1MapChooser](preview.png)
 ![PMM GG1MapChooser](readymap.png)
