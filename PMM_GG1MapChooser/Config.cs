@@ -11,7 +11,9 @@ public class BridgeConfig : BasePluginConfig
     // Used when a GG1 menu has no title (nominations, admin map list).
     [JsonPropertyName("DefaultTitle")] public string DefaultTitle { get; set; } = "Выбор карты";
     [JsonPropertyName("ShowVoteCount")] public bool ShowVoteCount { get; set; } = true;
-    // Empty = the player's own menu from !menu. Otherwise a MenuType name: PanoramaMenu, PanoramaWasdMenu, ChatMenu ...
+    // Empty = the player's own menu from !menu. Otherwise: wasd, mouse, chat, console, center, metamod, csgo
+    // (full MenuType names like PanoramaWasdMenu work too). Also sets the map vote mode:
+    // mouse = cursor + click, chat = !1..!N only, wasd/center/metamod/csgo = W/S + E (the player can walk).
     [JsonPropertyName("ForceMenuType")] public string ForceMenuType { get; set; } = "";
     [JsonPropertyName("CloseCheckInterval")] public float CloseCheckInterval { get; set; } = 0.25f;
     // After opening, MenuManager may wait HudOpenDelay before the HUD shows; do not treat that as "closed".
@@ -54,8 +56,7 @@ public class VoteOptions
 {
     // false = the end-of-map vote uses the plain MenuManager menu like other GG1 menus.
     [JsonPropertyName("Enabled")] public bool Enabled { get; set; } = true;
-    // "Panorama" = cursor, vote by click (and !1..!N). "Chat" = no cursor, vote with !1..!N.
-    [JsonPropertyName("VoteInput")] public string VoteInput { get; set; } = "Panorama";
+    // The vote mode follows ForceMenuType (or the player's !menu when it is empty). VoteInput is no longer used.
     // "Left" | "Center" | "Right"
     [JsonPropertyName("Position")] public string Position { get; set; } = "Right";
     // Raise mp_freezetime for the round in which GG1 starts the vote at round start.
@@ -84,6 +85,7 @@ public class VoteTexts
     [JsonPropertyName("Title")] public string Title { get; set; } = "СЛЕДУЮЩАЯ КАРТА";
     // {0} = number of rows
     [JsonPropertyName("HintClick")] public string HintClick { get; set; } = "Клик по карте или !1 – !{0} в чат";
+    [JsonPropertyName("HintWasd")] public string HintWasd { get; set; } = "W / S — выбор, E — голос, или !1 – !{0}";
     [JsonPropertyName("HintChat")] public string HintChat { get; set; } = "Пиши !1 – !{0} в чат";
     // {0} = voted, {1} = players
     [JsonPropertyName("Voted")] public string Voted { get; set; } = "{0} / {1} голосов";

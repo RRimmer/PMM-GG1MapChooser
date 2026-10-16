@@ -9,7 +9,6 @@
   "Debug": false,
   "Vote": {
     "Enabled": true,
-    "VoteInput": "Panorama",
     "Position": "Right",
     "FreezeTimeVote": true,
     "FreezeTimeExtra": 3,
@@ -28,6 +27,7 @@
     "Brand": "★ PMM MAP VOTE",
     "Title": "СЛЕДУЮЩАЯ КАРТА",
     "HintClick": "Клик по карте или !1 – !{0} в чат",
+    "HintWasd": "W / S — выбор, E — голос, или !1 – !{0}",
     "HintChat": "Пиши !1 – !{0} в чат",
     "Voted": "{0} / {1} голосов",
     "YourVote": "ТВОЙ ГОЛОС",

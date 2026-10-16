@@ -5,7 +5,7 @@
 		<include src="s2r://panorama/styles/custom_game/pmm_mapvote_maps.vcss_c" />
 	</styles>
 	<Panel class="mv-screen" hittest="false">
-		<Panel id="mv-root" class="mv-root mv-hidden pos-right mode-click" hittest="false">
+		<Panel id="mv-root" class="mv-root mv-hidden pos-right" hittest="false">
 			<Panel class="mv-vote">
 				<Panel class="mv-head">
 					<Panel class="mv-headtext" hittest="false">
@@ -162,7 +162,9 @@
 				</Button>
 				</Panel>
 				<Panel class="mv-foot" hittest="false">
-					<Label class="mv-hint stratum-medium-tf" text="{s:mv_hint}" />
+					<Label class="mv-hint mv-hint-click stratum-medium-tf" text="{s:mv_hint_click}" />
+					<Label class="mv-hint mv-hint-chat stratum-medium-tf" text="{s:mv_hint_chat}" />
+					<Label class="mv-hint mv-hint-wasd stratum-medium-tf" text="{s:mv_hint_wasd}" />
 					<Label class="mv-voted stratum-medium-tf" text="{s:mv_voted}" />
 				</Panel>
 			</Panel>

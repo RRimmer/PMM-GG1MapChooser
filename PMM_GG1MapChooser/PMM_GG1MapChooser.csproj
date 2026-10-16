@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
         <AssemblyName>PMM_GG1MapChooser</AssemblyName>
         <RootNamespace>PMM_GG1MapChooser</RootNamespace>
-        <Version>0.0.2</Version>
+        <Version>0.0.3</Version>
         <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 

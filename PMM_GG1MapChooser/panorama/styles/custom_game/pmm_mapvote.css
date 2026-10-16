@@ -143,6 +143,7 @@
 }
 
 .mv-root.mode-chat .mv-x,
+.mv-root.mode-wasd .mv-x,
 .mv-root.voted .mv-x,
 .mv-root.done .mv-x
 {
@@ -196,6 +197,18 @@
 {
 	background-color: #ffffff1a;
 	border: 1px solid #f5a62380;
+}
+
+/* Wasd mode: row under the W/S highlight */
+.mv-row.is-cur
+{
+	background-color: #ffffff1f;
+	border: 1px solid #ffffffb0;
+}
+
+.mv-row.is-cur .mv-num
+{
+	border: 1px solid #ffffff;
 }
 
 .mv-row.mv-off
@@ -397,6 +410,21 @@
 	width: fill-parent-flow( 1.0 );
 	font-size: 12px;
 	color: #8b93a7;
+}
+
+/* One hint per mode; the mode class is set per player on mv-root. Click hint is the fallback. */
+.mv-hint-chat,
+.mv-hint-wasd,
+.mv-root.mode-chat .mv-hint-click,
+.mv-root.mode-wasd .mv-hint-click
+{
+	visibility: collapse;
+}
+
+.mv-root.mode-chat .mv-hint-chat,
+.mv-root.mode-wasd .mv-hint-wasd
+{
+	visibility: visible;
 }
 
 .mv-voted

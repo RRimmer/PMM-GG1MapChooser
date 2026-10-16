@@ -6,6 +6,7 @@ using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Extensions;
 using CounterStrikeSharp.API.Modules.Timers;
 using CounterStrikeSharp.API.Modules.Utils;
+using MenuManager;
 using Microsoft.Extensions.Logging;
 using Timer = CounterStrikeSharp.API.Modules.Timers.Timer;
 
@@ -58,9 +59,58 @@ public partial class Plugin
         public readonly HashSet<int> MenuOpen = new();   // GG1 menu currently open for the slot
         public readonly HashSet<int> Captured = new();
         public readonly HashSet<int> Dismissed = new();  // pressed ×: no cursor until a revote
+        public readonly Dictionary<int, int> Cursor = new();     // Wasd mode: highlighted row
+        public readonly Dictionary<int, ulong> Buttons = new();  // Wasd mode: buttons on the previous tick
+        public readonly Dictionary<int, VoteMode> Mode = new();  // per player: ForceMenuType or the player's !menu
     }
 
-    private bool ClickMode => !string.Equals(Config.Vote.VoteInput, "Chat", StringComparison.OrdinalIgnoreCase);
+    internal enum VoteMode { Click, Chat, Wasd }
+
+    // Same rule as ordinary GG1 menus: ForceMenuType wins, empty = what the player picked in !menu.
+    private VoteMode ModeFor(CCSPlayerController player)
+    {
+        MenuType t = _forceType ?? MenuType.Default;
+        if (_forceType == null && _api != null)
+        {
+            // GetSelectedMenu is newer than GetMenuType. On an older core the separate method
+            // fails to JIT (MissingMethodException) and we fall back; GetMenuType reports WASD as PanoramaMenu.
+            try { t = SelectedMenu(_api, player); }
+            catch { try { t = _api.GetMenuType(player); } catch { t = MenuType.Default; } }
+        }
+        return t switch
+        {
+            MenuType.PanoramaMenu or MenuType.Default => VoteMode.Click,
+            MenuType.ChatMenu or MenuType.ConsoleMenu => VoteMode.Chat,
+            _ => VoteMode.Wasd, // PanoramaWasdMenu, ButtonMenu, CenterMenu, MetamodMenu, CsgoMenu: keyboard menus
+        };
+    }
+
+    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
+    private static MenuType SelectedMenu(IMenuApi api, CCSPlayerController player) => api.GetSelectedMenu(player);
+
+    private VoteMode ModeOf(MapVote v, int slot) => v.Mode.TryGetValue(slot, out var m) ? m : VoteMode.Click;
+
+    // Picks the mode for the player and applies it to the panel (classes, hint, cursor highlight).
+    private void ApplyMode(MapVote v, CCSPlayerController p)
+    {
+        int slot = p.Slot;
+        VoteMode m = ModeFor(p);
+        bool changed = !v.Mode.TryGetValue(slot, out var old) || old != m;
+        v.Mode[slot] = m;
+        PClass(p, RootId, "mode-click", m == VoteMode.Click);
+        PClass(p, RootId, "mode-chat", m == VoteMode.Chat);
+        PClass(p, RootId, "mode-wasd", m == VoteMode.Wasd);
+        if (!changed) return;
+        if (m == VoteMode.Wasd)
+        {
+            v.Buttons[slot] = (ulong)p.Buttons; // keys held right now must not move the highlight
+            MoveCursor(p, v.Cursor.TryGetValue(slot, out int c) ? c : 0);
+        }
+        else
+        {
+            for (int i = 0; i < RowPool; i++) PClass(p, "mv-row-" + i, "is-cur", false);
+        }
+    }
 
     // ---------------------------------------------------------------- lifecycle
 
@@ -77,8 +127,12 @@ public partial class Plugin
                 _vote.Shown.Remove(slot);
                 _vote.Captured.Remove(slot);
                 _vote.Wasd.Remove(slot);
+                _vote.Cursor.Remove(slot);
+                _vote.Buttons.Remove(slot);
+                _vote.Mode.Remove(slot);
             }
         });
+        RegisterListener<Listeners.OnTick>(WasdTick);
         AddCommandListener("say", OnSay);
         AddCommandListener("say_team", OnSay);
         _voteTick = AddTimer(0.2f, VoteTick, TimerFlags.REPEAT);
@@ -148,7 +202,8 @@ public partial class Plugin
                 ShowFor(player);
                 AddTimer(Math.Max(0f, Config.Vote.InputDelay), () =>
                 {
-                    if (_vote != null && _vote.Token == token) _vote.Shown.Add(slot);
+                    if (_vote == null || _vote.Token != token) return;
+                    _vote.Shown.Add(slot);
                 });
             });
         }
@@ -272,6 +327,49 @@ public partial class Plugin
         }
     }
 
+    // Wasd mode: W/S move the highlighted row, E votes for it (like the default GG1 WASD menu).
+    private void WasdTick()
+    {
+        var v = _vote;
+        if (v == null || v.Ended || v.Shown.Count == 0) return;
+        int rows = Math.Min(v.Rows.Count, RowPool);
+        if (rows == 0) return;
+
+        foreach (int slot in v.Shown)
+        {
+            var p = Utilities.GetPlayerFromSlot(slot);
+            if (p == null || !p.IsValid || p.IsBot || ModeOf(v, slot) != VoteMode.Wasd) continue;
+            ulong now = (ulong)p.Buttons;
+            ulong prev = v.Buttons.TryGetValue(slot, out var b) ? b : now;
+            v.Buttons[slot] = now;
+            ulong pressed = now & ~prev;
+            if (pressed == 0) continue;
+
+            int cur = v.Cursor.TryGetValue(slot, out int c) ? c : 0;
+            if ((pressed & (ulong)PlayerButtons.Forward) != 0) MoveCursorLater(p, (cur - 1 + rows) % rows);
+            else if ((pressed & (ulong)PlayerButtons.Back) != 0) MoveCursorLater(p, (cur + 1) % rows);
+            else if ((pressed & (ulong)PlayerButtons.Use) != 0) { int idx = cur; Server.NextFrame(() => { if (p.IsValid) Pick(p, idx); }); }
+        }
+    }
+
+    // OnTick iterates v.Shown; changing player state is safe, but keep work out of the loop body.
+    private void MoveCursorLater(CCSPlayerController p, int index)
+    {
+        if (_vote != null) _vote.Cursor[p.Slot] = index;
+        Server.NextFrame(() => { if (p.IsValid) MoveCursor(p, index); });
+    }
+
+    private void MoveCursor(CCSPlayerController player, int index)
+    {
+        var v = _vote;
+        if (v == null) return;
+        int rows = Math.Min(v.Rows.Count, RowPool);
+        if (rows == 0) return;
+        index = Math.Clamp(index, 0, rows - 1);
+        v.Cursor[player.Slot] = index;
+        for (int i = 0; i < RowPool; i++) PClass(player, "mv-row-" + i, "is-cur", i == index);
+    }
+
     private HookResult OnSay(CCSPlayerController? player, CommandInfo info)
     {
         var v = _vote;
@@ -378,7 +476,8 @@ public partial class Plugin
             }
             PClass(p, RootId, "voted", myKey != null);
 
-            bool want = ClickMode && myKey == null && v.Shown.Contains(slot) && !v.Dismissed.Contains(slot);
+            ApplyMode(v, p); // the player may change !menu during the vote
+            bool want = ModeOf(v, slot) == VoteMode.Click && myKey == null && v.Shown.Contains(slot) && !v.Dismissed.Contains(slot);
             SetCapture(p, want);
         }
     }
@@ -389,7 +488,9 @@ public partial class Plugin
         foreach (int slot in v.Viewers.ToList())
         {
             var p = Utilities.GetPlayerFromSlot(slot);
-            if (p != null && p.IsValid) SetCapture(p, false);
+            if (p == null || !p.IsValid) continue;
+            SetCapture(p, false);
+            for (int i = 0; i < RowPool; i++) PClass(p, "mv-row-" + i, "is-cur", false);
         }
         FreezeRestore("vote end");
 
@@ -408,7 +509,9 @@ public partial class Plugin
         {
             for (int i = 0; i < Math.Min(v.Rows.Count, RowPool); i++) GClass("mv-row-" + i, "is-win", i == win);
             GClass(RootId, "done", true);
-            GVar("mv_hint", Config.Texts.Done);
+            GVar("mv_hint_click", Config.Texts.Done);
+            GVar("mv_hint_chat", Config.Texts.Done);
+            GVar("mv_hint_wasd", Config.Texts.Done);
             hold = Math.Max(0.5f, Config.Vote.CheckSeconds);
         }
         else
@@ -449,8 +552,6 @@ public partial class Plugin
             _ => "pos-right"
         };
         foreach (var c in new[] { "pos-left", "pos-center", "pos-right" }) GClass(RootId, c, c == pos);
-        GClass(RootId, "mode-click", ClickMode);
-        GClass(RootId, "mode-chat", !ClickMode);
         GClass(RootId, "no-counts", !Config.Vote.ShowVoteCounts);
         GClass(RootId, "view-card", false);
         GClass(RootId, "done", false);
@@ -459,7 +560,9 @@ public partial class Plugin
         GVar("mv_brand", Config.Texts.Brand);
         GVar("mv_title", Config.Texts.Title);
         GVar("mv_yours", Config.Texts.YourVote);
-        GVar("mv_hint", Fmt(ClickMode ? Config.Texts.HintClick : Config.Texts.HintChat, shown));
+        GVar("mv_hint_click", Fmt(Config.Texts.HintClick, shown));
+        GVar("mv_hint_chat", Fmt(Config.Texts.HintChat, shown));
+        GVar("mv_hint_wasd", Fmt(Config.Texts.HintWasd, shown));
         GVar("mv_time", Fmt(Config.Texts.Time, (int)v.Duration));
         GArt("mv-tfill", "t20");
 
@@ -485,6 +588,7 @@ public partial class Plugin
     private void ShowFor(CCSPlayerController player)
     {
         if (_mvLayout == null || !_mvLayout.IsValid) return;
+        if (_vote != null) ApplyMode(_vote, player);
         PClass(player, RootId, "mv-hidden", false);
     }
 
@@ -494,11 +598,16 @@ public partial class Plugin
         if (_mvLayout != null && _mvLayout.IsValid)
         {
             PClass(player, RootId, "mv-hidden", true);
-            for (int i = 0; i < RowPool; i++) PClass(player, "mv-row-" + i, "is-mine", false);
+            for (int i = 0; i < RowPool; i++)
+            {
+                PClass(player, "mv-row-" + i, "is-mine", false);
+                PClass(player, "mv-row-" + i, "is-cur", false);
+            }
             PClass(player, RootId, "voted", false);
         }
         if (_vote == null) return;
         _vote.Captured.Remove(player.Slot);
+        _vote.Mode.Remove(player.Slot);
     }
 
     private void SetCapture(CCSPlayerController player, bool on)

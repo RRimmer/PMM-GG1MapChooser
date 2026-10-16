@@ -18,7 +18,7 @@ namespace PMM_GG1MapChooser;
 public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
 {
     public override string ModuleName => "PMM_GG1MapChooser";
-    public override string ModuleVersion => "0.0.2";
+    public override string ModuleVersion => "0.0.3";
     public override string ModuleAuthor => "Rimmer";
     public override string ModuleDescription => "Shows GG1MapChooser WASD menus through PanoramaMenuManager (Harmony bridge)";
 
@@ -74,7 +74,7 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
             Logger.LogWarning("MenuManager (menu:nfcore) not found, GG1 keeps its own menu");
             return;
         }
-        _forceType = Enum.TryParse<MenuType>(Config.ForceMenuType, true, out var t) && Config.ForceMenuType != "" ? t : null;
+        _forceType = ParseMenuType(Config.ForceMenuType);
         Patch();
         AddTimer(Math.Max(0.1f, Config.CloseCheckInterval), SyncClosed, TimerFlags.REPEAT);
     }
@@ -259,6 +259,34 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
                 Invoke(s.WasdPlayer, "OpenMainMenu", new object?[] { null });
             }
         }
+    }
+
+    // Full MenuType names plus the short names people actually type in the config.
+    private MenuType? ParseMenuType(string? raw)
+    {
+        string v = (raw ?? "").Trim().Replace(" ", "").Replace("_", "").Replace("-", "").ToLowerInvariant();
+        if (v == "" || v == "default" || v == "player") return null;
+        MenuType? t = v switch
+        {
+            "wasd" or "panoramawasd" or "panoramawasdmenu" => MenuType.PanoramaWasdMenu,
+            "mouse" or "panorama" or "panoramamouse" or "panoramamenu" => MenuType.PanoramaMenu,
+            "chat" or "chatmenu" => MenuType.ChatMenu,
+            "console" or "consolemenu" => MenuType.ConsoleMenu,
+            "center" or "centre" or "html" or "centermenu" => MenuType.CenterMenu,
+            "metamod" or "metamodmenu" => MenuType.MetamodMenu,
+            "csgo" or "csgomenu" => MenuType.CsgoMenu,
+            _ => null
+        };
+        if (t == null)
+        {
+            Logger.LogWarning("ForceMenuType \"{Value}\" is unknown, using the player's !menu choice. " +
+                "Use: wasd, mouse, chat, console, center, metamod, csgo", raw);
+        }
+        else
+        {
+            Logger.LogInformation("ForceMenuType: {Type}", t);
+        }
+        return t;
     }
 
     private Session GetSession(int slot, object wasdPlayer)
