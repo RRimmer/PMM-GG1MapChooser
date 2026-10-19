@@ -12,6 +12,16 @@
 						<Label class="mv-brand stratum-bold-tf" text="{s:mv_brand}" />
 						<Label class="mv-title stratum-bold-tf" text="{s:mv_title}" />
 					</Panel>
+					<Button id="mv-gear" class="mv-gear">
+						<Panel class="mv-gear-ic" hittest="false" />
+						<Label class="mv-gear-name gm-click stratum-bold-tf" text="{s:md_click}" />
+						<Label class="mv-gear-name gm-wasd stratum-bold-tf" text="{s:md_wasd}" />
+						<Label class="mv-gear-name gm-digits stratum-bold-tf" text="{s:md_digits}" />
+						<Label class="mv-gear-name gm-chat stratum-bold-tf" text="{s:md_chat}" />
+						<Label class="mv-gear-key gk-wasd stratum-bold-tf" text="R" />
+						<Label class="mv-gear-key gk-digits stratum-bold-tf" text="0" />
+						<Label class="mv-gear-key gk-chat stratum-bold-tf" text="!vm" />
+					</Button>
 					<Panel class="mv-timer" hittest="false">
 						<Panel class="mv-timer-ic" />
 						<Label class="mv-time stratum-bold-tf" text="{s:mv_time}" />
@@ -25,7 +35,8 @@
 					<Panel id="mv-art-0" class="mv-art" hittest="false" />
 					<Panel class="mv-info" hittest="false">
 						<Panel class="mv-line" hittest="false">
-							<Label class="mv-name stratum-bold-tf" text="{s:name0}" />
+							<Label class="mv-name mv-mapname stratum-bold-tf" text="{s:name0}" />
+							<Label class="mv-name mv-sname stratum-bold-tf" text="{s:sname0}" />
 							<Label id="mv-badge-0" class="mv-badge stratum-bold-tf" text="{s:badge0}" />
 							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
 						</Panel>
@@ -39,7 +50,8 @@
 					<Panel id="mv-art-1" class="mv-art" hittest="false" />
 					<Panel class="mv-info" hittest="false">
 						<Panel class="mv-line" hittest="false">
-							<Label class="mv-name stratum-bold-tf" text="{s:name1}" />
+							<Label class="mv-name mv-mapname stratum-bold-tf" text="{s:name1}" />
+							<Label class="mv-name mv-sname stratum-bold-tf" text="{s:sname1}" />
 							<Label id="mv-badge-1" class="mv-badge stratum-bold-tf" text="{s:badge1}" />
 							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
 						</Panel>
@@ -53,7 +65,8 @@
 					<Panel id="mv-art-2" class="mv-art" hittest="false" />
 					<Panel class="mv-info" hittest="false">
 						<Panel class="mv-line" hittest="false">
-							<Label class="mv-name stratum-bold-tf" text="{s:name2}" />
+							<Label class="mv-name mv-mapname stratum-bold-tf" text="{s:name2}" />
+							<Label class="mv-name mv-sname stratum-bold-tf" text="{s:sname2}" />
 							<Label id="mv-badge-2" class="mv-badge stratum-bold-tf" text="{s:badge2}" />
 							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
 						</Panel>
@@ -67,7 +80,8 @@
 					<Panel id="mv-art-3" class="mv-art" hittest="false" />
 					<Panel class="mv-info" hittest="false">
 						<Panel class="mv-line" hittest="false">
-							<Label class="mv-name stratum-bold-tf" text="{s:name3}" />
+							<Label class="mv-name mv-mapname stratum-bold-tf" text="{s:name3}" />
+							<Label class="mv-name mv-sname stratum-bold-tf" text="{s:sname3}" />
 							<Label id="mv-badge-3" class="mv-badge stratum-bold-tf" text="{s:badge3}" />
 							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
 						</Panel>
@@ -81,7 +95,8 @@
 					<Panel id="mv-art-4" class="mv-art" hittest="false" />
 					<Panel class="mv-info" hittest="false">
 						<Panel class="mv-line" hittest="false">
-							<Label class="mv-name stratum-bold-tf" text="{s:name4}" />
+							<Label class="mv-name mv-mapname stratum-bold-tf" text="{s:name4}" />
+							<Label class="mv-name mv-sname stratum-bold-tf" text="{s:sname4}" />
 							<Label id="mv-badge-4" class="mv-badge stratum-bold-tf" text="{s:badge4}" />
 							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
 						</Panel>
@@ -95,7 +110,8 @@
 					<Panel id="mv-art-5" class="mv-art" hittest="false" />
 					<Panel class="mv-info" hittest="false">
 						<Panel class="mv-line" hittest="false">
-							<Label class="mv-name stratum-bold-tf" text="{s:name5}" />
+							<Label class="mv-name mv-mapname stratum-bold-tf" text="{s:name5}" />
+							<Label class="mv-name mv-sname stratum-bold-tf" text="{s:sname5}" />
 							<Label id="mv-badge-5" class="mv-badge stratum-bold-tf" text="{s:badge5}" />
 							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
 						</Panel>
@@ -109,7 +125,8 @@
 					<Panel id="mv-art-6" class="mv-art" hittest="false" />
 					<Panel class="mv-info" hittest="false">
 						<Panel class="mv-line" hittest="false">
-							<Label class="mv-name stratum-bold-tf" text="{s:name6}" />
+							<Label class="mv-name mv-mapname stratum-bold-tf" text="{s:name6}" />
+							<Label class="mv-name mv-sname stratum-bold-tf" text="{s:sname6}" />
 							<Label id="mv-badge-6" class="mv-badge stratum-bold-tf" text="{s:badge6}" />
 							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
 						</Panel>
@@ -123,7 +140,8 @@
 					<Panel id="mv-art-7" class="mv-art" hittest="false" />
 					<Panel class="mv-info" hittest="false">
 						<Panel class="mv-line" hittest="false">
-							<Label class="mv-name stratum-bold-tf" text="{s:name7}" />
+							<Label class="mv-name mv-mapname stratum-bold-tf" text="{s:name7}" />
+							<Label class="mv-name mv-sname stratum-bold-tf" text="{s:sname7}" />
 							<Label id="mv-badge-7" class="mv-badge stratum-bold-tf" text="{s:badge7}" />
 							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
 						</Panel>
@@ -137,7 +155,8 @@
 					<Panel id="mv-art-8" class="mv-art" hittest="false" />
 					<Panel class="mv-info" hittest="false">
 						<Panel class="mv-line" hittest="false">
-							<Label class="mv-name stratum-bold-tf" text="{s:name8}" />
+							<Label class="mv-name mv-mapname stratum-bold-tf" text="{s:name8}" />
+							<Label class="mv-name mv-sname stratum-bold-tf" text="{s:sname8}" />
 							<Label id="mv-badge-8" class="mv-badge stratum-bold-tf" text="{s:badge8}" />
 							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
 						</Panel>
@@ -151,7 +170,8 @@
 					<Panel id="mv-art-9" class="mv-art" hittest="false" />
 					<Panel class="mv-info" hittest="false">
 						<Panel class="mv-line" hittest="false">
-							<Label class="mv-name stratum-bold-tf" text="{s:name9}" />
+							<Label class="mv-name mv-mapname stratum-bold-tf" text="{s:name9}" />
+							<Label class="mv-name mv-sname stratum-bold-tf" text="{s:sname9}" />
 							<Label id="mv-badge-9" class="mv-badge stratum-bold-tf" text="{s:badge9}" />
 							<Label class="mv-mine stratum-bold-tf" text="{s:mv_yours}" />
 						</Panel>
@@ -165,6 +185,7 @@
 					<Label class="mv-hint mv-hint-click stratum-medium-tf" text="{s:mv_hint_click}" />
 					<Label class="mv-hint mv-hint-chat stratum-medium-tf" text="{s:mv_hint_chat}" />
 					<Label class="mv-hint mv-hint-wasd stratum-medium-tf" text="{s:mv_hint_wasd}" />
+					<Label class="mv-hint mv-hint-digits stratum-medium-tf" text="{s:mv_hint_digits}" />
 					<Label class="mv-voted stratum-medium-tf" text="{s:mv_voted}" />
 				</Panel>
 			</Panel>
@@ -175,8 +196,1022 @@
 					<Panel class="mv-card-check" />
 				</Panel>
 				<Panel class="mv-card-line">
-					<Label class="mv-card-title stratum-bold-tf" text="{s:card_title}" />
+					<Label class="mv-card-title mv-card-maptitle stratum-bold-tf" text="{s:card_title}" />
+					<Label class="mv-card-title mv-card-stitle stratum-bold-tf" text="{s:card_stitle}" />
 					<Label id="mv-card-badge" class="mv-badge mv-card-badge stratum-bold-tf" text="{s:card_badge}" />
+				</Panel>
+			</Panel>
+		</Panel>
+		<Panel id="nm-root" class="mv-root nm-root mv-hidden pos-right" hittest="false">
+			<Panel class="mv-vote">
+				<Panel class="mv-head">
+					<Panel class="mv-headtext" hittest="false">
+						<Label class="mv-brand stratum-bold-tf" text="{s:nm_brand}" />
+						<Label class="mv-title stratum-bold-tf" text="{s:nm_title}" />
+					</Panel>
+					<Button id="nm-gear" class="mv-gear">
+						<Panel class="mv-gear-ic" hittest="false" />
+						<Label class="mv-gear-name gm-click stratum-bold-tf" text="{s:md_click}" />
+						<Label class="mv-gear-name gm-wasd stratum-bold-tf" text="{s:md_wasd}" />
+						<Label class="mv-gear-name gm-digits stratum-bold-tf" text="{s:md_digits}" />
+						<Label class="mv-gear-name gm-chat stratum-bold-tf" text="{s:md_chat}" />
+						<Label class="mv-gear-key gk-wasd stratum-bold-tf" text="!vm" />
+						<Label class="mv-gear-key gk-digits stratum-bold-tf" text="!vm" />
+						<Label class="mv-gear-key gk-chat stratum-bold-tf" text="!vm" />
+					</Button>
+					<Button id="nm-close" class="mv-x"><Label class="stratum-bold-tf" text="×" /></Button>
+				</Panel>
+				<Panel class="mv-tbar" hittest="false" />
+				<Panel class="mv-rows">
+				<Button id="nm-row-0" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="nm-art-0" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname0}" />
+							<Label id="nm-badge-0" class="mv-badge stratum-bold-tf" text="{s:nmbadge0}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-1" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="nm-art-1" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname1}" />
+							<Label id="nm-badge-1" class="mv-badge stratum-bold-tf" text="{s:nmbadge1}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-2" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="nm-art-2" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname2}" />
+							<Label id="nm-badge-2" class="mv-badge stratum-bold-tf" text="{s:nmbadge2}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-3" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="nm-art-3" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname3}" />
+							<Label id="nm-badge-3" class="mv-badge stratum-bold-tf" text="{s:nmbadge3}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-4" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="nm-art-4" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname4}" />
+							<Label id="nm-badge-4" class="mv-badge stratum-bold-tf" text="{s:nmbadge4}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-5" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="nm-art-5" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname5}" />
+							<Label id="nm-badge-5" class="mv-badge stratum-bold-tf" text="{s:nmbadge5}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-6" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="nm-art-6" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname6}" />
+							<Label id="nm-badge-6" class="mv-badge stratum-bold-tf" text="{s:nmbadge6}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-7" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="nm-art-7" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname7}" />
+							<Label id="nm-badge-7" class="mv-badge stratum-bold-tf" text="{s:nmbadge7}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-8" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="nm-art-8" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname8}" />
+							<Label id="nm-badge-8" class="mv-badge stratum-bold-tf" text="{s:nmbadge8}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-9" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="nm-art-9" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname9}" />
+							<Label id="nm-badge-9" class="mv-badge stratum-bold-tf" text="{s:nmbadge9}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-10" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="nm-art-10" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname10}" />
+							<Label id="nm-badge-10" class="mv-badge stratum-bold-tf" text="{s:nmbadge10}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-11" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="nm-art-11" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname11}" />
+							<Label id="nm-badge-11" class="mv-badge stratum-bold-tf" text="{s:nmbadge11}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-12" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="nm-art-12" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname12}" />
+							<Label id="nm-badge-12" class="mv-badge stratum-bold-tf" text="{s:nmbadge12}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-13" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="nm-art-13" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname13}" />
+							<Label id="nm-badge-13" class="mv-badge stratum-bold-tf" text="{s:nmbadge13}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-14" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="nm-art-14" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname14}" />
+							<Label id="nm-badge-14" class="mv-badge stratum-bold-tf" text="{s:nmbadge14}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-15" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="nm-art-15" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname15}" />
+							<Label id="nm-badge-15" class="mv-badge stratum-bold-tf" text="{s:nmbadge15}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-16" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="nm-art-16" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname16}" />
+							<Label id="nm-badge-16" class="mv-badge stratum-bold-tf" text="{s:nmbadge16}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-17" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="nm-art-17" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname17}" />
+							<Label id="nm-badge-17" class="mv-badge stratum-bold-tf" text="{s:nmbadge17}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-18" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="nm-art-18" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname18}" />
+							<Label id="nm-badge-18" class="mv-badge stratum-bold-tf" text="{s:nmbadge18}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-19" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="nm-art-19" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname19}" />
+							<Label id="nm-badge-19" class="mv-badge stratum-bold-tf" text="{s:nmbadge19}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-20" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="nm-art-20" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname20}" />
+							<Label id="nm-badge-20" class="mv-badge stratum-bold-tf" text="{s:nmbadge20}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-21" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="nm-art-21" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname21}" />
+							<Label id="nm-badge-21" class="mv-badge stratum-bold-tf" text="{s:nmbadge21}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-22" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="nm-art-22" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname22}" />
+							<Label id="nm-badge-22" class="mv-badge stratum-bold-tf" text="{s:nmbadge22}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-23" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="nm-art-23" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname23}" />
+							<Label id="nm-badge-23" class="mv-badge stratum-bold-tf" text="{s:nmbadge23}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-24" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="nm-art-24" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname24}" />
+							<Label id="nm-badge-24" class="mv-badge stratum-bold-tf" text="{s:nmbadge24}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-25" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="nm-art-25" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname25}" />
+							<Label id="nm-badge-25" class="mv-badge stratum-bold-tf" text="{s:nmbadge25}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-26" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="nm-art-26" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname26}" />
+							<Label id="nm-badge-26" class="mv-badge stratum-bold-tf" text="{s:nmbadge26}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-27" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="nm-art-27" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname27}" />
+							<Label id="nm-badge-27" class="mv-badge stratum-bold-tf" text="{s:nmbadge27}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-28" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="nm-art-28" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname28}" />
+							<Label id="nm-badge-28" class="mv-badge stratum-bold-tf" text="{s:nmbadge28}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-29" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="nm-art-29" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname29}" />
+							<Label id="nm-badge-29" class="mv-badge stratum-bold-tf" text="{s:nmbadge29}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-30" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="nm-art-30" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname30}" />
+							<Label id="nm-badge-30" class="mv-badge stratum-bold-tf" text="{s:nmbadge30}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-31" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="nm-art-31" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname31}" />
+							<Label id="nm-badge-31" class="mv-badge stratum-bold-tf" text="{s:nmbadge31}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-32" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="nm-art-32" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname32}" />
+							<Label id="nm-badge-32" class="mv-badge stratum-bold-tf" text="{s:nmbadge32}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-33" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="nm-art-33" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname33}" />
+							<Label id="nm-badge-33" class="mv-badge stratum-bold-tf" text="{s:nmbadge33}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-34" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="nm-art-34" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname34}" />
+							<Label id="nm-badge-34" class="mv-badge stratum-bold-tf" text="{s:nmbadge34}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-35" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="nm-art-35" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname35}" />
+							<Label id="nm-badge-35" class="mv-badge stratum-bold-tf" text="{s:nmbadge35}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-36" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="nm-art-36" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname36}" />
+							<Label id="nm-badge-36" class="mv-badge stratum-bold-tf" text="{s:nmbadge36}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-37" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="nm-art-37" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname37}" />
+							<Label id="nm-badge-37" class="mv-badge stratum-bold-tf" text="{s:nmbadge37}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-38" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="nm-art-38" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname38}" />
+							<Label id="nm-badge-38" class="mv-badge stratum-bold-tf" text="{s:nmbadge38}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-39" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="nm-art-39" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname39}" />
+							<Label id="nm-badge-39" class="mv-badge stratum-bold-tf" text="{s:nmbadge39}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-40" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="nm-art-40" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname40}" />
+							<Label id="nm-badge-40" class="mv-badge stratum-bold-tf" text="{s:nmbadge40}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-41" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="nm-art-41" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname41}" />
+							<Label id="nm-badge-41" class="mv-badge stratum-bold-tf" text="{s:nmbadge41}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-42" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="nm-art-42" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname42}" />
+							<Label id="nm-badge-42" class="mv-badge stratum-bold-tf" text="{s:nmbadge42}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-43" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="nm-art-43" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname43}" />
+							<Label id="nm-badge-43" class="mv-badge stratum-bold-tf" text="{s:nmbadge43}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-44" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="nm-art-44" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname44}" />
+							<Label id="nm-badge-44" class="mv-badge stratum-bold-tf" text="{s:nmbadge44}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-45" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="nm-art-45" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname45}" />
+							<Label id="nm-badge-45" class="mv-badge stratum-bold-tf" text="{s:nmbadge45}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-46" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="nm-art-46" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname46}" />
+							<Label id="nm-badge-46" class="mv-badge stratum-bold-tf" text="{s:nmbadge46}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-47" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="nm-art-47" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname47}" />
+							<Label id="nm-badge-47" class="mv-badge stratum-bold-tf" text="{s:nmbadge47}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-48" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="nm-art-48" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname48}" />
+							<Label id="nm-badge-48" class="mv-badge stratum-bold-tf" text="{s:nmbadge48}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-49" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="nm-art-49" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname49}" />
+							<Label id="nm-badge-49" class="mv-badge stratum-bold-tf" text="{s:nmbadge49}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-50" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="nm-art-50" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname50}" />
+							<Label id="nm-badge-50" class="mv-badge stratum-bold-tf" text="{s:nmbadge50}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-51" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="nm-art-51" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname51}" />
+							<Label id="nm-badge-51" class="mv-badge stratum-bold-tf" text="{s:nmbadge51}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-52" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="nm-art-52" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname52}" />
+							<Label id="nm-badge-52" class="mv-badge stratum-bold-tf" text="{s:nmbadge52}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-53" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="nm-art-53" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname53}" />
+							<Label id="nm-badge-53" class="mv-badge stratum-bold-tf" text="{s:nmbadge53}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-54" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel id="nm-art-54" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname54}" />
+							<Label id="nm-badge-54" class="mv-badge stratum-bold-tf" text="{s:nmbadge54}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-55" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel id="nm-art-55" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname55}" />
+							<Label id="nm-badge-55" class="mv-badge stratum-bold-tf" text="{s:nmbadge55}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-56" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel id="nm-art-56" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname56}" />
+							<Label id="nm-badge-56" class="mv-badge stratum-bold-tf" text="{s:nmbadge56}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-57" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel id="nm-art-57" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname57}" />
+							<Label id="nm-badge-57" class="mv-badge stratum-bold-tf" text="{s:nmbadge57}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-58" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel id="nm-art-58" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname58}" />
+							<Label id="nm-badge-58" class="mv-badge stratum-bold-tf" text="{s:nmbadge58}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				<Button id="nm-row-59" class="mv-row nm-row mv-off">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="6" /></Panel>
+					<Panel id="nm-art-59" class="mv-art" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Panel class="mv-line" hittest="false">
+							<Label class="mv-name stratum-bold-tf" text="{s:nmname59}" />
+							<Label id="nm-badge-59" class="mv-badge stratum-bold-tf" text="{s:nmbadge59}" />
+						</Panel>
+						<Panel class="nm-states" hittest="false">
+							<Label class="nm-st nm-st-taken stratum-bold-tf" text="{s:nm_taken}" />
+							<Label class="nm-st nm-st-mine stratum-bold-tf" text="{s:nm_mine}" />
+							<Label class="nm-st nm-st-cool stratum-bold-tf" text="{s:nm_cool}" />
+						</Panel>
+					</Panel>
+				</Button>
+				</Panel>
+				<Panel class="nm-pager">
+					<Button id="nm-prev" class="nm-pbtn"><Label class="stratum-bold-tf" text="‹" /></Button>
+					<Panel class="nm-pages" hittest="false">
+						<Label id="nm-pg-0" class="nm-pg stratum-bold-tf" text="1 / {s:nm_pages}" />
+						<Label id="nm-pg-1" class="nm-pg stratum-bold-tf" text="2 / {s:nm_pages}" />
+						<Label id="nm-pg-2" class="nm-pg stratum-bold-tf" text="3 / {s:nm_pages}" />
+						<Label id="nm-pg-3" class="nm-pg stratum-bold-tf" text="4 / {s:nm_pages}" />
+						<Label id="nm-pg-4" class="nm-pg stratum-bold-tf" text="5 / {s:nm_pages}" />
+						<Label id="nm-pg-5" class="nm-pg stratum-bold-tf" text="6 / {s:nm_pages}" />
+						<Label id="nm-pg-6" class="nm-pg stratum-bold-tf" text="7 / {s:nm_pages}" />
+						<Label id="nm-pg-7" class="nm-pg stratum-bold-tf" text="8 / {s:nm_pages}" />
+						<Label id="nm-pg-8" class="nm-pg stratum-bold-tf" text="9 / {s:nm_pages}" />
+						<Label id="nm-pg-9" class="nm-pg stratum-bold-tf" text="10 / {s:nm_pages}" />
+					</Panel>
+					<Button id="nm-next" class="nm-pbtn"><Label class="stratum-bold-tf" text="›" /></Button>
+					<Label class="nm-count stratum-medium-tf" text="{s:nm_count}" />
+				</Panel>
+				<Panel class="mv-foot" hittest="false">
+					<Label class="mv-hint mv-hint-click stratum-medium-tf" text="{s:nm_hint_click}" />
+					<Label class="mv-hint mv-hint-wasd stratum-medium-tf" text="{s:nm_hint_wasd}" />
+					<Label class="mv-hint mv-hint-digits stratum-medium-tf" text="{s:nm_hint_digits}" />
+					<Label class="mv-hint mv-hint-chat stratum-medium-tf" text="{s:nm_hint_chat}" />
+				</Panel>
+			</Panel>
+		</Panel>
+		<Panel id="st-root" class="mv-root st-root mv-hidden pos-right" hittest="false">
+			<Panel class="mv-vote">
+				<Panel class="mv-head">
+					<Panel class="mv-headtext" hittest="false">
+						<Label class="mv-brand stratum-bold-tf" text="{s:st_brand}" />
+						<Label class="mv-title stratum-bold-tf" text="{s:st_title}" />
+					</Panel>
+					<Button id="st-close" class="mv-x"><Label class="stratum-bold-tf" text="×" /></Button>
+				</Panel>
+				<Label class="st-sub stratum-medium-tf" text="{s:st_sub}" />
+				<Panel class="mv-tbar" hittest="false" />
+				<Panel class="mv-rows">
+				<Button id="st-row-0" class="mv-row st-row st-k0">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="1" /></Panel>
+					<Panel class="st-ic" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Label class="mv-name stratum-bold-tf" text="{s:st_name0}" />
+						<Label class="st-desc stratum-medium-tf" text="{s:st_desc0}" />
+					</Panel>
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="st-row-1" class="mv-row st-row st-k1">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="2" /></Panel>
+					<Panel class="st-ic" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Label class="mv-name stratum-bold-tf" text="{s:st_name1}" />
+						<Label class="st-desc stratum-medium-tf" text="{s:st_desc1}" />
+					</Panel>
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="st-row-2" class="mv-row st-row st-k2">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="3" /></Panel>
+					<Panel class="st-ic" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Label class="mv-name stratum-bold-tf" text="{s:st_name2}" />
+						<Label class="st-desc stratum-medium-tf" text="{s:st_desc2}" />
+					</Panel>
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="st-row-3" class="mv-row st-row st-k3">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="4" /></Panel>
+					<Panel class="st-ic" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Label class="mv-name stratum-bold-tf" text="{s:st_name3}" />
+						<Label class="st-desc stratum-medium-tf" text="{s:st_desc3}" />
+					</Panel>
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				<Button id="st-row-4" class="mv-row st-row st-k4">
+					<Panel class="mv-num"><Label class="stratum-bold-tf" text="5" /></Panel>
+					<Panel class="st-ic" hittest="false" />
+					<Panel class="mv-info" hittest="false">
+						<Label class="mv-name stratum-bold-tf" text="{s:st_name4}" />
+						<Label class="st-desc stratum-medium-tf" text="{s:st_desc4}" />
+					</Panel>
+					<Panel class="mv-tick" hittest="false" />
+				</Button>
+				</Panel>
+				<Panel class="mv-foot" hittest="false">
+					<Label class="mv-hint mv-hint-click stratum-medium-tf" text="{s:st_hint_click}" />
+					<Label class="mv-hint mv-hint-wasd stratum-medium-tf" text="{s:st_hint_wasd}" />
+					<Label class="mv-hint mv-hint-digits stratum-medium-tf" text="{s:st_hint_digits}" />
+					<Label class="mv-hint mv-hint-chat stratum-medium-tf" text="{s:st_hint_chat}" />
 				</Panel>
 			</Panel>
 		</Panel>

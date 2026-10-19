@@ -7,7 +7,7 @@
         <Nullable>enable</Nullable>
         <AssemblyName>PMM_GG1MapChooser</AssemblyName>
         <RootNamespace>PMM_GG1MapChooser</RootNamespace>
-        <Version>0.0.3</Version>
+        <Version>0.1.0</Version>
         <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 
@@ -29,6 +29,7 @@
 
     <ItemGroup>
         <None Include="lib\0Harmony.dll" Link="harmony\0Harmony.dll" CopyToOutputDirectory="PreserveNewest"/>
+        <None Update="lang\*.json" CopyToOutputDirectory="PreserveNewest"/>
     </ItemGroup>
 
 </Project>

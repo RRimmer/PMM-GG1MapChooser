@@ -3,33 +3,20 @@ using System.Reflection;
 using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Commands;
-using CounterStrikeSharp.API.Modules.Extensions;
-using CounterStrikeSharp.API.Modules.Timers;
 using CounterStrikeSharp.API.Modules.Utils;
-using MenuManager;
 using Microsoft.Extensions.Logging;
-using Timer = CounterStrikeSharp.API.Modules.Timers.Timer;
 
 namespace PMM_GG1MapChooser;
 
-// End-of-map vote panel: GG1 keeps all vote logic (counting, revote, map change),
-// this file only draws GlobalWASDMenu in panorama/layout/custom_game/pmm_mapvote.xml.
+// End-of-map vote panel (#mv-root): GG1 keeps all vote logic (counting, revote, map change),
+// this file only draws GlobalWASDMenu. Input (click / WASD / digits / chat) comes from Players.cs.
 public partial class Plugin
 {
     internal const int RowPool = 10;
-    private const string RootId = "mv-root";
     private const BindingFlags AnyStatic = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static;
 
-    private CCSCustomHudLayout? _mvLayout;
     private MapVote? _vote;
     private int _voteToken;
-    private Timer? _voteTick;
-
-    // What was sent to the entity, so a refresh only sends differences.
-    private readonly Dictionary<string, bool> _gClass = new(StringComparer.Ordinal);
-    private readonly Dictionary<string, string> _gVar = new(StringComparer.Ordinal);
-    private readonly Dictionary<string, string> _gArt = new(StringComparer.Ordinal);
-    private readonly Dictionary<string, bool>?[] _pClass = new Dictionary<string, bool>?[65];
 
     private sealed class VoteRow
     {
@@ -50,114 +37,51 @@ public partial class Plugin
         public int Token;
         public DateTime Start;
         public float Duration;
-        public string? SelectedBefore;
         public bool Ended;
+        public int Minutes;             // GG1 ExtendMapTimeMinutes (vote.extend {0})
+        public int Left;                // seconds left
+        public int VotedCount;
+        public int EligibleCount;
+        public int Win = -1;            // winning row after the end
+        public bool CheckStyle;         // result shown as a tick (Done hint) instead of the card
         public readonly List<VoteRow> Rows = new();
         public readonly Dictionary<int, object> Wasd = new();
-        public readonly HashSet<int> Viewers = new();
-        public readonly HashSet<int> Shown = new();      // panel visible and input delay passed
+        public readonly HashSet<int> Viewers = new();    // got the vote menu from GG1
+        public readonly HashSet<int> Visible = new();    // panel shown (after OpenDelay)
+        public readonly HashSet<int> Shown = new();      // input allowed (after InputDelay)
         public readonly HashSet<int> MenuOpen = new();   // GG1 menu currently open for the slot
-        public readonly HashSet<int> Captured = new();
         public readonly HashSet<int> Dismissed = new();  // pressed ×: no cursor until a revote
-        public readonly Dictionary<int, int> Cursor = new();     // Wasd mode: highlighted row
-        public readonly Dictionary<int, ulong> Buttons = new();  // Wasd mode: buttons on the previous tick
-        public readonly Dictionary<int, VoteMode> Mode = new();  // per player: ForceMenuType or the player's !menu
-    }
-
-    internal enum VoteMode { Click, Chat, Wasd }
-
-    // Same rule as ordinary GG1 menus: ForceMenuType wins, empty = what the player picked in !menu.
-    private VoteMode ModeFor(CCSPlayerController player)
-    {
-        MenuType t = _forceType ?? MenuType.Default;
-        if (_forceType == null && _api != null)
-        {
-            // GetSelectedMenu is newer than GetMenuType. On an older core the separate method
-            // fails to JIT (MissingMethodException) and we fall back; GetMenuType reports WASD as PanoramaMenu.
-            try { t = SelectedMenu(_api, player); }
-            catch { try { t = _api.GetMenuType(player); } catch { t = MenuType.Default; } }
-        }
-        return t switch
-        {
-            MenuType.PanoramaMenu or MenuType.Default => VoteMode.Click,
-            MenuType.ChatMenu or MenuType.ConsoleMenu => VoteMode.Chat,
-            _ => VoteMode.Wasd, // PanoramaWasdMenu, ButtonMenu, CenterMenu, MetamodMenu, CsgoMenu: keyboard menus
-        };
-    }
-
-    [System.Runtime.CompilerServices.MethodImpl(System.Runtime.CompilerServices.MethodImplOptions.NoInlining)]
-    private static MenuType SelectedMenu(IMenuApi api, CCSPlayerController player) => api.GetSelectedMenu(player);
-
-    private VoteMode ModeOf(MapVote v, int slot) => v.Mode.TryGetValue(slot, out var m) ? m : VoteMode.Click;
-
-    // Picks the mode for the player and applies it to the panel (classes, hint, cursor highlight).
-    private void ApplyMode(MapVote v, CCSPlayerController p)
-    {
-        int slot = p.Slot;
-        VoteMode m = ModeFor(p);
-        bool changed = !v.Mode.TryGetValue(slot, out var old) || old != m;
-        v.Mode[slot] = m;
-        PClass(p, RootId, "mode-click", m == VoteMode.Click);
-        PClass(p, RootId, "mode-chat", m == VoteMode.Chat);
-        PClass(p, RootId, "mode-wasd", m == VoteMode.Wasd);
-        if (!changed) return;
-        if (m == VoteMode.Wasd)
-        {
-            v.Buttons[slot] = (ulong)p.Buttons; // keys held right now must not move the highlight
-            MoveCursor(p, v.Cursor.TryGetValue(slot, out int c) ? c : 0);
-        }
-        else
-        {
-            for (int i = 0; i < RowPool; i++) PClass(p, "mv-row-" + i, "is-cur", false);
-        }
     }
 
     // ---------------------------------------------------------------- lifecycle
 
-    private void VoteLoad(bool hotReload)
+    private void VoteLoad()
     {
-        RegisterListener<Listeners.OnCustomHudClicked>(OnHudClick);
-        RegisterListener<Listeners.OnMapStart>(_ => VoteReset());
-        RegisterListener<Listeners.OnClientDisconnect>(slot =>
-        {
-            if (slot >= 0 && slot < _pClass.Length) _pClass[slot] = null;
-            if (_vote != null)
-            {
-                _vote.Viewers.Remove(slot);
-                _vote.Shown.Remove(slot);
-                _vote.Captured.Remove(slot);
-                _vote.Wasd.Remove(slot);
-                _vote.Cursor.Remove(slot);
-                _vote.Buttons.Remove(slot);
-                _vote.Mode.Remove(slot);
-            }
-        });
-        RegisterListener<Listeners.OnTick>(WasdTick);
-        AddCommandListener("say", OnSay);
-        AddCommandListener("say_team", OnSay);
-        _voteTick = AddTimer(0.2f, VoteTick, TimerFlags.REPEAT);
         WriteMapsCss();
+    }
+
+    private void VoteForgetSlot(int slot)
+    {
+        var v = _vote;
+        if (v == null) return;
+        v.Viewers.Remove(slot);
+        v.Visible.Remove(slot);
+        v.Shown.Remove(slot);
+        v.MenuOpen.Remove(slot);
+        v.Dismissed.Remove(slot);
+        v.Wasd.Remove(slot);
     }
 
     private void VoteUnload()
     {
         var v = _vote;
-        if (v != null)
+        _vote = null;
+        if (v == null) return;
+        foreach (int slot in v.Viewers.ToList())
         {
-            foreach (int slot in v.Viewers.ToList())
-            {
-                var p = Utilities.GetPlayerFromSlot(slot);
-                if (p != null && p.IsValid) HideFor(p);
-            }
+            var p = Utilities.GetPlayerFromSlot(slot);
+            if (p != null && p.IsValid) HideVoteFor(p);
         }
-        _vote = null;
-    }
-
-    private void VoteReset()
-    {
-        _vote = null;
-        _mvLayout = null;
-        ForgetAllSent();
     }
 
     // ---------------------------------------------------------------- GG1 hook
@@ -195,15 +119,22 @@ public partial class Plugin
 
         if (v.Viewers.Add(slot))
         {
+            // The vote replaces an open nominate list.
+            NomForget(player);
             int token = v.Token;
             AddTimer(Math.Max(0f, Config.Vote.OpenDelay), () =>
             {
                 if (_vote == null || _vote.Token != token || _vote.Ended || !player.IsValid) return;
-                ShowFor(player);
+                _vote.Visible.Add(slot);
+                var s = PS(slot);
+                s.VoteCur = 0;
+                s.Buttons = (ulong)player.Buttons;
+                RenderPlayer(player);
                 AddTimer(Math.Max(0f, Config.Vote.InputDelay), () =>
                 {
-                    if (_vote == null || _vote.Token != token) return;
+                    if (_vote == null || _vote.Token != token || !player.IsValid) return;
                     _vote.Shown.Add(slot);
+                    RenderPlayer(player);
                 });
             });
         }
@@ -215,10 +146,12 @@ public partial class Plugin
         if (_vote != null)
         {
             // A new vote while the previous result is still on screen.
-            foreach (int slot in _vote.Viewers.ToList())
+            var old = _vote;
+            _vote = null;
+            foreach (int slot in old.Viewers.ToList())
             {
                 var p = Utilities.GetPlayerFromSlot(slot);
-                if (p != null && p.IsValid) HideFor(p);
+                if (p != null && p.IsValid) HideVoteFor(p);
             }
         }
         _voteToken++;
@@ -229,19 +162,13 @@ public partial class Plugin
             Token = _voteToken,
             Start = DateTime.UtcNow,
             Duration = Math.Max(1, GgVoteInt(gg, "VotingTime", 25)),
-            SelectedBefore = Get(gg, "_selectedMap") as string,
         };
+        v.Left = (int)v.Duration;
         BuildRows(v);
         _vote = v;
 
-        if (!EnsureVoteLayout())
-        {
-            Logger.LogError("custom_hud_layout for the map vote was not created");
-        }
-        else
-        {
-            PaintStatic(v);
-        }
+        if (!EnsureHud()) Logger.LogError("custom_hud_layout for the map vote was not created");
+        else PaintVoteStatic(v);
 
         if (Config.Vote.FreezeTimeVote)
         {
@@ -268,6 +195,7 @@ public partial class Plugin
         }
 
         int minutes = GgVoteInt(v.Gg, "ExtendMapTimeMinutes", 10);
+        v.Minutes = minutes;
         var list = Get(v.Menu, "Options");
         for (var node = Get(list, "First"); node != null; node = Get(node, "Next"))
         {
@@ -278,9 +206,10 @@ public partial class Plugin
             if (disp == ext || disp == nov)
             {
                 row.Kind = disp == ext ? "extend" : "novote";
+                // The text is per player (lang vote.extend / vote.novote), see RenderVotePlayer.
+                row.Title = "";
                 if (Config.Specials.TryGetValue(row.Kind, out var sp))
                 {
-                    if (!string.IsNullOrWhiteSpace(sp.Title)) row.Title = Fmt(sp.Title, minutes);
                     row.Art = "ic-" + San(string.IsNullOrWhiteSpace(sp.Icon) ? "none" : sp.Icon);
                 }
                 else
@@ -291,14 +220,7 @@ public partial class Plugin
             else
             {
                 row.Key = byDisplay.TryGetValue(disp, out var k) ? k : disp;
-                Config.Maps.TryGetValue(row.Key, out var cfg);
-                if (!string.IsNullOrWhiteSpace(cfg?.Title)) row.Title = cfg!.Title;
-                row.Art = MapArtClass(row.Key, cfg);
-                if (!string.IsNullOrWhiteSpace(cfg?.Badge))
-                {
-                    row.BadgeText = cfg!.Badge;
-                    row.BadgeClass = "bd-" + San(cfg.Badge);
-                }
+                FillMapLook(row.Key, disp, out row.Title, out row.Art, out row.BadgeText, out row.BadgeClass);
             }
             v.Rows.Add(row);
         }
@@ -308,90 +230,58 @@ public partial class Plugin
         }
     }
 
-    // ---------------------------------------------------------------- input
-
-    private void OnHudClick(CCSPlayerController player, CCSCustomHudLayout layout, string buttonId)
+    // Title, picture and badge of a map from the config (shared by the vote and the nominate list).
+    private void FillMapLook(string key, string fallbackTitle, out string title, out string art, out string badgeText, out string? badgeClass)
     {
-        var v = _vote;
-        if (v == null || _mvLayout == null || layout.Handle != _mvLayout.Handle || !v.Viewers.Contains(player.Slot)) return;
-
-        if (buttonId == "mv-close")
+        Config.Maps.TryGetValue(key, out var cfg);
+        title = !string.IsNullOrWhiteSpace(cfg?.Title) ? cfg!.Title : fallbackTitle;
+        art = MapArtClass(key, cfg);
+        badgeText = "";
+        badgeClass = null;
+        if (!string.IsNullOrWhiteSpace(cfg?.Badge))
         {
-            v.Dismissed.Add(player.Slot);
-            SetCapture(player, false);
-            return;
-        }
-        if (buttonId.StartsWith("mv-row-", StringComparison.Ordinal) && int.TryParse(buttonId["mv-row-".Length..], out int i))
-        {
-            Pick(player, i);
+            badgeText = cfg!.Badge;
+            badgeClass = "bd-" + San(cfg.Badge);
         }
     }
 
-    // Wasd mode: W/S move the highlighted row, E votes for it (like the default GG1 WASD menu).
-    private void WasdTick()
+    // ---------------------------------------------------------------- input (from Players.cs)
+
+    private bool VoteWantsCursor(CCSPlayerController p)
     {
         var v = _vote;
-        if (v == null || v.Ended || v.Shown.Count == 0) return;
-        int rows = Math.Min(v.Rows.Count, RowPool);
-        if (rows == 0) return;
-
-        foreach (int slot in v.Shown)
-        {
-            var p = Utilities.GetPlayerFromSlot(slot);
-            if (p == null || !p.IsValid || p.IsBot || ModeOf(v, slot) != VoteMode.Wasd) continue;
-            ulong now = (ulong)p.Buttons;
-            ulong prev = v.Buttons.TryGetValue(slot, out var b) ? b : now;
-            v.Buttons[slot] = now;
-            ulong pressed = now & ~prev;
-            if (pressed == 0) continue;
-
-            int cur = v.Cursor.TryGetValue(slot, out int c) ? c : 0;
-            if ((pressed & (ulong)PlayerButtons.Forward) != 0) MoveCursorLater(p, (cur - 1 + rows) % rows);
-            else if ((pressed & (ulong)PlayerButtons.Back) != 0) MoveCursorLater(p, (cur + 1) % rows);
-            else if ((pressed & (ulong)PlayerButtons.Use) != 0) { int idx = cur; Server.NextFrame(() => { if (p.IsValid) Pick(p, idx); }); }
-        }
+        int slot = p.Slot;
+        if (v == null || v.Ended || !v.Shown.Contains(slot) || v.Dismissed.Contains(slot)) return false;
+        return VotePlayers(v)?.ContainsKey(slot) != true;
     }
 
-    // OnTick iterates v.Shown; changing player state is safe, but keep work out of the loop body.
-    private void MoveCursorLater(CCSPlayerController p, int index)
-    {
-        if (_vote != null) _vote.Cursor[p.Slot] = index;
-        Server.NextFrame(() => { if (p.IsValid) MoveCursor(p, index); });
-    }
-
-    private void MoveCursor(CCSPlayerController player, int index)
+    private void VoteDismiss(CCSPlayerController p)
     {
         var v = _vote;
-        if (v == null) return;
-        int rows = Math.Min(v.Rows.Count, RowPool);
-        if (rows == 0) return;
-        index = Math.Clamp(index, 0, rows - 1);
-        v.Cursor[player.Slot] = index;
-        for (int i = 0; i < RowPool; i++) PClass(player, "mv-row-" + i, "is-cur", i == index);
+        if (v == null || !v.Viewers.Contains(p.Slot)) return;
+        v.Dismissed.Add(p.Slot);
+        RenderPlayer(p);
     }
 
-    private HookResult OnSay(CCSPlayerController? player, CommandInfo info)
+    private HookResult VoteChat(CCSPlayerController player, int n)
     {
         var v = _vote;
-        if (player == null || !player.IsValid || v == null || v.Ended || !Config.Vote.ChatNumbers) return HookResult.Continue;
+        if (v == null || v.Ended || !Config.Vote.ChatNumbers) return HookResult.Continue;
         if (!v.Wasd.ContainsKey(player.Slot)) return HookResult.Continue;
-
-        string text = info.GetArg(1).Trim().Trim('"').Trim();
-        if (text.Length < 2 || (text[0] != '!' && text[0] != '/')) return HookResult.Continue;
-        if (!int.TryParse(text[1..], out int n) || n < 1 || n > Math.Min(v.Rows.Count, RowPool)) return HookResult.Continue;
-
-        Pick(player, n - 1);
+        if (n > Math.Min(v.Rows.Count, RowPool)) return HookResult.Continue;
+        Server.NextFrame(() => { if (player.IsValid) VotePick(player, n - 1); });
         return HookResult.Handled;
     }
 
-    private void Pick(CCSPlayerController player, int index)
+    private void VotePick(CCSPlayerController player, int index)
     {
         var v = _vote;
-        if (v == null || v.Ended || index < 0 || index >= v.Rows.Count) return;
+        if (v == null || v.Ended || index < 0 || index >= Math.Min(v.Rows.Count, RowPool)) return;
         int slot = player.Slot;
+        if (!v.Viewers.Contains(slot)) return;
         if (VotePlayers(v)?.ContainsKey(slot) == true)
         {
-            player.PrintToChat(" " + Config.Texts.AlreadyVoted);
+            Chat(player, "vote.already_voted");
             return;
         }
         if (!v.Wasd.TryGetValue(slot, out var wp)) return;
@@ -405,6 +295,7 @@ public partial class Plugin
 
         Set(wp, "CurrentChoice", v.Rows[index].Node);
         Invoke(wp, "Choose");
+        RenderPlayer(player);
     }
 
     // ---------------------------------------------------------------- refresh
@@ -412,22 +303,7 @@ public partial class Plugin
     private void VoteTick()
     {
         var v = _vote;
-        if (v == null) return;
-
-        if (_mvLayout == null || !_mvLayout.IsValid)
-        {
-            // Round restart destroys the entity: create it again and redraw everything.
-            if (!EnsureVoteLayout()) return;
-            PaintStatic(v);
-            v.Captured.Clear();
-            foreach (int slot in v.Viewers.ToList())
-            {
-                var p = Utilities.GetPlayerFromSlot(slot);
-                if (p != null && p.IsValid) ShowFor(p);
-            }
-            if (v.Ended) return;
-        }
-        if (v.Ended) return;
+        if (v == null || v.Ended) return;
 
         if (!ReferenceEquals(Get(v.Gg, "GlobalWASDMenu"), v.Menu))
         {
@@ -435,9 +311,9 @@ public partial class Plugin
             return;
         }
 
-        // timer
+        // timer (the text is per player)
         double left = Math.Max(0, v.Duration - (DateTime.UtcNow - v.Start).TotalSeconds);
-        GVar("mv_time", Fmt(Config.Texts.Time, (int)Math.Ceiling(left)));
+        v.Left = (int)Math.Ceiling(left);
         GArt("mv-tfill", "t" + (int)Math.Round(left / v.Duration * 20));
 
         // counts
@@ -455,43 +331,59 @@ public partial class Plugin
         }
 
         var voted = VotePlayers(v);
-        GVar("mv_voted", Fmt(Config.Texts.Voted, voted?.Count ?? total, Eligible(v.Gg)));
+        v.VotedCount = voted?.Count ?? total;
+        v.EligibleCount = Eligible(v.Gg);
+    }
 
-        foreach (int slot in v.Viewers.ToList())
+    // Per-player part of the vote panel: texts in the player's language, own vote, keyboard highlight.
+    private void RenderVotePlayer(CCSPlayerController p, PState s)
+    {
+        var v = _vote;
+        if (v == null) return;
+        int slot = p.Slot;
+        int shown = Math.Min(v.Rows.Count, RowPool);
+        PVar(p, "mv_brand", T(p, "vote.brand"));
+        PVar(p, "mv_title", T(p, "vote.title"));
+        PVar(p, "mv_yours", T(p, "vote.your_vote"));
+        PVar(p, "mv_time", T(p, "vote.time", v.Ended ? 0 : v.Left));
+        PVar(p, "mv_voted", T(p, "vote.voted", v.VotedCount, v.EligibleCount));
+        bool done = v.Ended && v.CheckStyle;
+        PVar(p, "mv_hint_click", done ? T(p, "vote.done") : T(p, "vote.hint_click", shown));
+        PVar(p, "mv_hint_chat", done ? T(p, "vote.done") : T(p, "vote.hint_chat", shown));
+        PVar(p, "mv_hint_wasd", done ? T(p, "vote.done") : T(p, "vote.hint_wasd", shown));
+        PVar(p, "mv_hint_digits", done ? T(p, "vote.done") : T(p, "vote.hint_digits", Math.Min(shown, 9)));
+        for (int i = 0; i < shown; i++)
         {
-            var p = Utilities.GetPlayerFromSlot(slot);
-            if (p == null || !p.IsValid)
-            {
-                v.Viewers.Remove(slot);
-                continue;
-            }
-            string? myKey = voted != null && voted.TryGetValue(slot, out var k) ? k : null;
-            int mine = myKey == null ? -1 : v.Rows.FindIndex(r =>
-                (r.Kind == "map" && string.Equals(r.Key, myKey, StringComparison.OrdinalIgnoreCase)) ||
-                (r.Kind == "extend" && myKey == "extend.map") ||
-                (r.Kind == "novote" && myKey == "novote.line"));
-            for (int i = 0; i < Math.Min(v.Rows.Count, RowPool); i++)
-            {
-                PClass(p, "mv-row-" + i, "is-mine", i == mine);
-            }
-            PClass(p, RootId, "voted", myKey != null);
-
-            ApplyMode(v, p); // the player may change !menu during the vote
-            bool want = ModeOf(v, slot) == VoteMode.Click && myKey == null && v.Shown.Contains(slot) && !v.Dismissed.Contains(slot);
-            SetCapture(p, want);
+            var row = v.Rows[i];
+            if (row.Kind == "extend") PVar(p, "sname" + i, T(p, "vote.extend", v.Minutes));
+            else if (row.Kind == "novote") PVar(p, "sname" + i, T(p, "vote.novote"));
         }
+        if (v.Win >= 0 && v.Win < v.Rows.Count && v.Rows[v.Win].Kind != "map")
+        {
+            var row = v.Rows[v.Win];
+            PVar(p, "card_stitle", row.Kind == "extend" ? T(p, "vote.extend", v.Minutes) : T(p, "vote.novote"));
+        }
+        if (v.Win >= 0) PVar(p, "card_sub", v.Rows[v.Win].Kind == "extend" ? T(p, "vote.extended") : T(p, "vote.next_map"));
+        var voted = VotePlayers(v);
+        string? myKey = voted != null && voted.TryGetValue(slot, out var k) ? k : null;
+        int mine = myKey == null ? -1 : v.Rows.FindIndex(r =>
+            (r.Kind == "map" && string.Equals(r.Key, myKey, StringComparison.OrdinalIgnoreCase)) ||
+            (r.Kind == "extend" && myKey == "extend.map") ||
+            (r.Kind == "novote" && myKey == "novote.line"));
+        int n = Math.Min(v.Rows.Count, RowPool);
+        bool cursor = s.Mode == VoteMode.Wasd && s.Focus == Focus.Vote && !v.Ended && v.Shown.Contains(slot);
+        if (n > 0) s.VoteCur = Math.Clamp(s.VoteCur, 0, n - 1);
+        for (int i = 0; i < n; i++)
+        {
+            PClass(p, "mv-row-" + i, "is-mine", i == mine);
+            PClass(p, "mv-row-" + i, "is-cur", cursor && i == s.VoteCur);
+        }
+        PClass(p, RootId, "voted", myKey != null);
     }
 
     private void EndMapVote(MapVote v)
     {
         v.Ended = true;
-        foreach (int slot in v.Viewers.ToList())
-        {
-            var p = Utilities.GetPlayerFromSlot(slot);
-            if (p == null || !p.IsValid) continue;
-            SetCapture(p, false);
-            for (int i = 0; i < RowPool; i++) PClass(p, "mv-row-" + i, "is-cur", false);
-        }
         FreezeRestore("vote end");
 
         string? sel = Get(v.Gg, "_selectedMap") as string;
@@ -499,6 +391,7 @@ public partial class Plugin
             (r.Kind == "map" && string.Equals(r.Key, sel, StringComparison.OrdinalIgnoreCase)) ||
             (r.Kind == "extend" && sel == "extend.map"));
         Logger.LogInformation("Map vote ended: {Sel} (row {Row})", sel ?? "-", win);
+        v.Win = win;
 
         float hold;
         if (win < 0)
@@ -509,16 +402,13 @@ public partial class Plugin
         {
             for (int i = 0; i < Math.Min(v.Rows.Count, RowPool); i++) GClass("mv-row-" + i, "is-win", i == win);
             GClass(RootId, "done", true);
-            GVar("mv_hint_click", Config.Texts.Done);
-            GVar("mv_hint_chat", Config.Texts.Done);
-            GVar("mv_hint_wasd", Config.Texts.Done);
+            v.CheckStyle = true;
             hold = Math.Max(0.5f, Config.Vote.CheckSeconds);
         }
         else
         {
             var row = v.Rows[win];
-            GVar("card_title", row.Title);
-            GVar("card_sub", row.Kind == "extend" ? Config.Texts.Extended : Config.Texts.NextMap);
+            GVar("card_title", row.Kind == "map" ? row.Title : "");
             GVar("card_badge", row.BadgeText);
             GArt("mv-card-art", row.Art);
             GArt("mv-card-badge", row.BadgeClass);
@@ -528,42 +418,36 @@ public partial class Plugin
             hold = Math.Max(0.5f, Config.Vote.ResultSeconds);
         }
 
+        // Cursors and highlights off right away.
+        foreach (int slot in v.Visible.ToList())
+        {
+            var p = Utilities.GetPlayerFromSlot(slot);
+            if (p != null && p.IsValid) RenderPlayer(p);
+        }
+
         int token = v.Token;
         AddTimer(hold, () =>
         {
             if (_vote == null || _vote.Token != token) return;
-            foreach (int slot in v.Viewers.ToList())
+            var viewers = v.Viewers.ToList();
+            _vote = null;
+            foreach (int slot in viewers)
             {
                 var p = Utilities.GetPlayerFromSlot(slot);
-                if (p != null && p.IsValid) HideFor(p);
+                if (p != null && p.IsValid) HideVoteFor(p);
             }
-            _vote = null;
         });
     }
 
     // ---------------------------------------------------------------- drawing
 
-    private void PaintStatic(MapVote v)
+    private void PaintVoteStatic(MapVote v)
     {
-        string pos = Config.Vote.Position.Trim().ToLowerInvariant() switch
-        {
-            "left" => "pos-left",
-            "center" or "centre" or "middle" => "pos-center",
-            _ => "pos-right"
-        };
-        foreach (var c in new[] { "pos-left", "pos-center", "pos-right" }) GClass(RootId, c, c == pos);
         GClass(RootId, "no-counts", !Config.Vote.ShowVoteCounts);
         GClass(RootId, "view-card", false);
         GClass(RootId, "done", false);
 
         int shown = Math.Min(v.Rows.Count, RowPool);
-        GVar("mv_brand", Config.Texts.Brand);
-        GVar("mv_title", Config.Texts.Title);
-        GVar("mv_yours", Config.Texts.YourVote);
-        GVar("mv_hint_click", Fmt(Config.Texts.HintClick, shown));
-        GVar("mv_hint_chat", Fmt(Config.Texts.HintChat, shown));
-        GVar("mv_hint_wasd", Fmt(Config.Texts.HintWasd, shown));
-        GVar("mv_time", Fmt(Config.Texts.Time, (int)v.Duration));
         GArt("mv-tfill", "t20");
 
         for (int i = 0; i < RowPool; i++)
@@ -585,105 +469,20 @@ public partial class Plugin
         }
     }
 
-    private void ShowFor(CCSPlayerController player)
+    // The vote is over for this player (call after _vote is cleared or the slot left Visible).
+    private void HideVoteFor(CCSPlayerController player)
     {
-        if (_mvLayout == null || !_mvLayout.IsValid) return;
-        if (_vote != null) ApplyMode(_vote, player);
-        PClass(player, RootId, "mv-hidden", false);
-    }
-
-    private void HideFor(CCSPlayerController player)
-    {
-        SetCapture(player, false);
-        if (_mvLayout != null && _mvLayout.IsValid)
+        _vote?.Visible.Remove(player.Slot);
+        if (!HudAlive) return;
+        PClass(player, RootId, "mv-hidden", true);
+        for (int i = 0; i < RowPool; i++)
         {
-            PClass(player, RootId, "mv-hidden", true);
-            for (int i = 0; i < RowPool; i++)
-            {
-                PClass(player, "mv-row-" + i, "is-mine", false);
-                PClass(player, "mv-row-" + i, "is-cur", false);
-            }
-            PClass(player, RootId, "voted", false);
+            PClass(player, "mv-row-" + i, "is-mine", false);
+            PClass(player, "mv-row-" + i, "is-cur", false);
         }
-        if (_vote == null) return;
-        _vote.Captured.Remove(player.Slot);
-        _vote.Mode.Remove(player.Slot);
-    }
-
-    private void SetCapture(CCSPlayerController player, bool on)
-    {
-        var v = _vote;
-        var layout = _mvLayout;
-        if (layout == null || !layout.IsValid || player.Handle == IntPtr.Zero) return;
-        bool has = v != null && v.Captured.Contains(player.Slot);
-        if (has == on) return;
-        layout.SetInputCaptureEnabled(player, on);
-        if (v == null) return;
-        if (on) v.Captured.Add(player.Slot); else v.Captured.Remove(player.Slot);
-    }
-
-    private bool EnsureVoteLayout()
-    {
-        if (_mvLayout != null && _mvLayout.IsValid) return true;
-        _mvLayout = null;
-        var created = Utilities.CreateEntityByName<CCSCustomHudLayout>("custom_hud_layout");
-        if (created == null || created.Handle == IntPtr.Zero) return false;
-        created.StrLayout = Config.Vote.LayoutPath;
-        created.DispatchSpawn();
-        if (!created.IsValid) return false;
-        _mvLayout = created;
-        ForgetAllSent();
-        return true;
-    }
-
-    private void ForgetAllSent()
-    {
-        _gClass.Clear();
-        _gVar.Clear();
-        _gArt.Clear();
-        for (int i = 0; i < _pClass.Length; i++) _pClass[i] = null;
-    }
-
-    private void GClass(string panel, string cls, bool on)
-    {
-        var l = _mvLayout;
-        if (l == null || !l.IsValid) return;
-        string key = panel + "\u0001" + cls;
-        if (_gClass.TryGetValue(key, out bool cur) && cur == on) return;
-        _gClass[key] = on;
-        l.SetHasClass(panel, cls, on);
-    }
-
-    // Dialog variables are set on the root; labels below it resolve them from there.
-    private void GVar(string name, string value)
-    {
-        var l = _mvLayout;
-        if (l == null || !l.IsValid) return;
-        if (_gVar.TryGetValue(name, out var cur) && cur == value) return;
-        _gVar[name] = value;
-        l.SetDialogVariableString(RootId, name, value);
-    }
-
-    // One "picture" class per panel: the previous one is removed.
-    private void GArt(string panel, string? cls)
-    {
-        _gArt.TryGetValue(panel, out var prev);
-        if (prev == cls) return;
-        if (!string.IsNullOrEmpty(prev)) GClass(panel, prev, false);
-        if (!string.IsNullOrEmpty(cls)) GClass(panel, cls, true);
-        if (cls == null) _gArt.Remove(panel); else _gArt[panel] = cls;
-    }
-
-    private void PClass(CCSPlayerController player, string panel, string cls, bool on)
-    {
-        var l = _mvLayout;
-        int slot = player.Slot;
-        if (l == null || !l.IsValid || slot < 0 || slot >= _pClass.Length || player.Handle == IntPtr.Zero) return;
-        var sent = _pClass[slot] ??= new Dictionary<string, bool>(StringComparer.Ordinal);
-        string key = panel + "\u0001" + cls;
-        if (sent.TryGetValue(key, out bool cur) && cur == on) return;
-        sent[key] = on;
-        l.SetHasClassForPlayer(player, panel, cls, on);
+        PClass(player, RootId, "voted", false);
+        if (player.Slot >= 0 && player.Slot < _ps.Length && _ps[player.Slot] != null) RenderPlayer(player);
+        else SetCapture(player, false);
     }
 
     // ---------------------------------------------------------------- GG1 data

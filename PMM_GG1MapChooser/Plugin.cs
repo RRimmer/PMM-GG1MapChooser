@@ -18,7 +18,7 @@ namespace PMM_GG1MapChooser;
 public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
 {
     public override string ModuleName => "PMM_GG1MapChooser";
-    public override string ModuleVersion => "0.0.3";
+    public override string ModuleVersion => "0.1.0";
     public override string ModuleAuthor => "Rimmer";
     public override string ModuleDescription => "Shows GG1MapChooser WASD menus through PanoramaMenuManager (Harmony bridge)";
 
@@ -33,7 +33,6 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
         config.Badges = new Dictionary<string, string>(config.Badges ?? new(), StringComparer.OrdinalIgnoreCase);
         config.Specials = new Dictionary<string, SpecialEntry>(config.Specials ?? new(), StringComparer.OrdinalIgnoreCase);
         config.Vote ??= new VoteOptions();
-        config.Texts ??= new VoteTexts();
         Config = config;
     }
 
@@ -62,7 +61,9 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
         Instance = this;
         _harmonyReady = HarmonyLoader.Ensure(ModuleDirectory, Logger);
         RegisterListener<Listeners.OnClientDisconnect>(slot => _sessions.Remove(slot));
-        VoteLoad(hotReload);
+        HudLoad();
+        VoteLoad();
+        PlayersLoad();
         FreezeLoad();
     }
 
@@ -75,6 +76,7 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
             return;
         }
         _forceType = ParseMenuType(Config.ForceMenuType);
+        HookNumberKeys();
         Patch();
         AddTimer(Math.Max(0.1f, Config.CloseCheckInterval), SyncClosed, TimerFlags.REPEAT);
     }
@@ -84,6 +86,7 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
         if (_harmonyReady) HarmonyHost.UnpatchAll(HarmonyId);
         _patched.Clear();
         VoteUnload();
+        UnhookNumberKeys();
         FreezeRestore("unload");
         Instance = null;
     }
@@ -167,8 +170,17 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
         var main = Get(wasdPlayer, "MainMenu");
         var current = Get(wasdPlayer, "CurrentChoice");
 
+        // A nominate list that is no longer GG1's open menu is dropped.
+        NomSync(player, main);
+
         // The end-of-map vote gets its own panel (MapVote.cs) instead of a MenuManager menu.
         if (VoteIntercept(player, wasdPlayer, main))
+        {
+            CloseFor(player);
+            return;
+        }
+        // !nominate gets its own panel (Nominate.cs) unless the player votes by chat.
+        if (main != null && NominateIntercept(player, wasdPlayer, main))
         {
             CloseFor(player);
             return;
@@ -186,7 +198,7 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
         bool showCount = Config.ShowVoteCount && Get(main, "DisplayOptionsCount") is true;
         bool hasBack = Get(parent, "Prev") != null;
         string title = Get(parent, "Title") as string ?? "";
-        if (string.IsNullOrWhiteSpace(title)) title = Config.DefaultTitle;
+        if (string.IsNullOrWhiteSpace(title)) title = T(player, "menu.title");
 
         var rows = new List<(object Node, string Text, bool Disabled)>();
         var sig = new StringBuilder();
@@ -207,7 +219,10 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
         if (s.Open && s.Signature == signature) return;
 
         Action<CCSPlayerController>? back = hasBack ? _ => Invoke(wasdPlayer, "CloseSubMenu") : null;
-        IMenu menu = _forceType is { } ft ? _api!.GetMenuForcetype(title, ft, back) : _api!.GetMenu(title, back);
+        // Chat-mode players get the nominate list as a chat menu (their vote mode, not their !menu).
+        MenuType? type = _forceType;
+        if (Config.Nominate.Enabled && main != null && IsNominateMenu(main) && ModeNow(player) == VoteMode.Chat) type = MenuType.ChatMenu;
+        IMenu menu = type is { } ft ? _api!.GetMenuForcetype(title, ft, back) : _api!.GetMenu(title, back);
         foreach (var row in rows)
         {
             var node = row.Node;
@@ -275,12 +290,13 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
             "center" or "centre" or "html" or "centermenu" => MenuType.CenterMenu,
             "metamod" or "metamodmenu" => MenuType.MetamodMenu,
             "csgo" or "csgomenu" => MenuType.CsgoMenu,
+            "digits" or "digit" or "numbers" or "panoramadigit" or "panoramadigitmenu" => MenuType.PanoramaDigitMenu,
             _ => null
         };
         if (t == null)
         {
             Logger.LogWarning("ForceMenuType \"{Value}\" is unknown, using the player's !menu choice. " +
-                "Use: wasd, mouse, chat, console, center, metamod, csgo", raw);
+                "Use: wasd, mouse, digits, chat, console, center, metamod, csgo", raw);
         }
         else
         {
@@ -319,7 +335,13 @@ public partial class Plugin : BasePlugin, IPluginConfig<BridgeConfig>
         info.ReplyToCommand($"[PMM_GG1] active={Active} enabled={Config.Enabled} menuApi={_api != null} gg1={_gg1?.GetName().Version?.ToString() ?? "none"}");
         info.ReplyToCommand($"[PMM_GG1] patched: {(_patched.Count == 0 ? "-" : string.Join(", ", _patched))}");
         info.ReplyToCommand($"[PMM_GG1] open sessions: {_sessions.Count(x => x.Value.Open)}");
-        info.ReplyToCommand($"[PMM_GG1] map vote: {(_vote == null ? "none" : $"{_vote.Rows.Count} rows, viewers {_vote.Viewers.Count}, ended {_vote.Ended}")}, layout {(_mvLayout?.IsValid == true ? "ok" : "none")}, freeze saved {(_freezeOrig?.ToString() ?? "-")}");
+        info.ReplyToCommand($"[PMM_GG1] map vote: {(_vote == null ? "none" : $"{_vote.Rows.Count} rows, viewers {_vote.Viewers.Count}, ended {_vote.Ended}")}, layout {(HudAlive ? "ok" : "none")}, freeze saved {(_freezeOrig?.ToString() ?? "-")}");
+        info.ReplyToCommand($"[PMM_GG1] vote modes: default {ModeKey(_defaultMode ?? VoteMode.Click)}, digits api {_digitsApi}, saved choices {_prefs.Count}, nominate rows {_nomRows.Count}");
+        foreach (var p in Utilities.GetPlayers().Where(x => x.IsValid && !x.IsBot))
+        {
+            var st = p.Slot >= 0 && p.Slot < _ps.Length ? _ps[p.Slot] : null;
+            info.ReplyToCommand($"[PMM_GG1]   {p.PlayerName}: mode {ModeKey(ResolveMode(p))}, focus {st?.Focus.ToString() ?? "-"}");
+        }
     }
 
     // ---------------- reflection ----------------

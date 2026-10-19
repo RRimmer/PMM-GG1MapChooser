@@ -8,12 +8,10 @@ public class BridgeConfig : BasePluginConfig
     [JsonPropertyName("Enabled")] public bool Enabled { get; set; } = true;
     // GG1 freezes the player while its WASD menu is open; a panorama menu does not need that.
     [JsonPropertyName("DisableFreeze")] public bool DisableFreeze { get; set; } = true;
-    // Used when a GG1 menu has no title (nominations, admin map list).
-    [JsonPropertyName("DefaultTitle")] public string DefaultTitle { get; set; } = "Выбор карты";
     [JsonPropertyName("ShowVoteCount")] public bool ShowVoteCount { get; set; } = true;
-    // Empty = the player's own menu from !menu. Otherwise: wasd, mouse, chat, console, center, metamod, csgo
-    // (full MenuType names like PanoramaWasdMenu work too). Also sets the map vote mode:
-    // mouse = cursor + click, chat = !1..!N only, wasd/center/metamod/csgo = W/S + E (the player can walk).
+    // Ordinary GG1 menus (admin map list, yes/no vote). Empty = the player's own menu from !menu.
+    // Otherwise: wasd, mouse, digits, chat, console, center, metamod, csgo (full MenuType names work too).
+    // The map vote and the nominate panel use Vote.DefaultMode and the player's own choice instead.
     [JsonPropertyName("ForceMenuType")] public string ForceMenuType { get; set; } = "";
     [JsonPropertyName("CloseCheckInterval")] public float CloseCheckInterval { get; set; } = 0.25f;
     // After opening, MenuManager may wait HudOpenDelay before the HUD shows; do not treat that as "closed".
@@ -21,7 +19,8 @@ public class BridgeConfig : BasePluginConfig
     [JsonPropertyName("Debug")] public bool Debug { get; set; } = false;
 
     [JsonPropertyName("Vote")] public VoteOptions Vote { get; set; } = new();
-    [JsonPropertyName("Texts")] public VoteTexts Texts { get; set; } = new();
+    [JsonPropertyName("Nominate")] public NominateOptions Nominate { get; set; } = new();
+    // All texts are in plugins/PMM_GG1MapChooser/lang/<language>.json (ru, en), per player language.
 
     // Badge name -> colour (#rrggbb). A map's "Badge" refers to a name from here.
     [JsonPropertyName("Badges")]
@@ -45,18 +44,26 @@ public class BridgeConfig : BasePluginConfig
     [JsonPropertyName("Specials")]
     public Dictionary<string, SpecialEntry> Specials { get; set; } = new(StringComparer.OrdinalIgnoreCase)
     {
-        ["extend"] = new SpecialEntry { Title = "Продлить +{0} мин", Icon = "clock" },
-        ["novote"] = new SpecialEntry { Title = "Не голосую", Icon = "cancel" },
+        ["extend"] = new SpecialEntry { Icon = "clock" },
+        ["novote"] = new SpecialEntry { Icon = "cancel" },
     };
 
-    [JsonPropertyName("ConfigVersion")] public override int Version { get; set; } = 2;
+    [JsonPropertyName("ConfigVersion")] public override int Version { get; set; } = 3;
 }
 
 public class VoteOptions
 {
     // false = the end-of-map vote uses the plain MenuManager menu like other GG1 menus.
     [JsonPropertyName("Enabled")] public bool Enabled { get; set; } = true;
-    // The vote mode follows ForceMenuType (or the player's !menu when it is empty). VoteInput is no longer used.
+    // Vote mode for a player who did not pick one (!vm) and keeps the default mouse panorama in !menu:
+    // "mouse" | "wasd" | "digits" | "chat". Empty = from ForceMenuType, else mouse.
+    // Order: the player's own choice (!vm) > the player's !menu (if not the mouse panorama) > DefaultMode.
+    // "digits" needs PMM Core 1.2.05 and a passed number keys check, otherwise mouse.
+    [JsonPropertyName("DefaultMode")] public string DefaultMode { get; set; } = "mouse";
+    // false = players cannot change the vote mode (no chip, no !vm).
+    [JsonPropertyName("AllowPlayerChoice")] public bool AllowPlayerChoice { get; set; } = true;
+    // Chat commands that open the vote mode settings (css_ prefix = !name / /name).
+    [JsonPropertyName("SettingsCommands")] public List<string> SettingsCommands { get; set; } = new() { "css_vm", "css_votemode" };
     // "Left" | "Center" | "Right"
     [JsonPropertyName("Position")] public string Position { get; set; } = "Right";
     // Raise mp_freezetime for the round in which GG1 starts the vote at round start.
@@ -68,7 +75,7 @@ public class VoteOptions
     // Used only if the saved original mp_freezetime cannot be read back (crash in the middle of a vote).
     [JsonPropertyName("FreezeTimeFallback")] public int FreezeTimeFallback { get; set; } = 15;
     [JsonPropertyName("ShowVoteCounts")] public bool ShowVoteCounts { get; set; } = true;
-    // !1..!N in chat (both modes).
+    // !1..!N in chat (every mode).
     [JsonPropertyName("ChatNumbers")] public bool ChatNumbers { get; set; } = true;
     // "Check" = tick on the winning row, "NextMapCard" = separate card with the next map.
     [JsonPropertyName("ResultStyle")] public string ResultStyle { get; set; } = "NextMapCard";
@@ -79,23 +86,10 @@ public class VoteOptions
     [JsonPropertyName("LayoutPath")] public string LayoutPath { get; set; } = "panorama/layout/custom_game/pmm_mapvote.xml";
 }
 
-public class VoteTexts
+public class NominateOptions
 {
-    [JsonPropertyName("Brand")] public string Brand { get; set; } = "★ PMM MAP VOTE";
-    [JsonPropertyName("Title")] public string Title { get; set; } = "СЛЕДУЮЩАЯ КАРТА";
-    // {0} = number of rows
-    [JsonPropertyName("HintClick")] public string HintClick { get; set; } = "Клик по карте или !1 – !{0} в чат";
-    [JsonPropertyName("HintWasd")] public string HintWasd { get; set; } = "W / S — выбор, E — голос, или !1 – !{0}";
-    [JsonPropertyName("HintChat")] public string HintChat { get; set; } = "Пиши !1 – !{0} в чат";
-    // {0} = voted, {1} = players
-    [JsonPropertyName("Voted")] public string Voted { get; set; } = "{0} / {1} голосов";
-    [JsonPropertyName("YourVote")] public string YourVote { get; set; } = "ТВОЙ ГОЛОС";
-    // {0} = seconds
-    [JsonPropertyName("Time")] public string Time { get; set; } = "{0}с";
-    [JsonPropertyName("NextMap")] public string NextMap { get; set; } = "СЛЕДУЮЩАЯ КАРТА";
-    [JsonPropertyName("Extended")] public string Extended { get; set; } = "КАРТА ПРОДЛЕНА";
-    [JsonPropertyName("Done")] public string Done { get; set; } = "Голосование завершено";
-    [JsonPropertyName("AlreadyVoted")] public string AlreadyVoted { get; set; } = "Ты уже проголосовал. Сменить голос: !revote";
+    // false = !nominate stays a plain MenuManager menu.
+    [JsonPropertyName("Enabled")] public bool Enabled { get; set; } = true;
 }
 
 public class MapEntry
@@ -111,8 +105,7 @@ public class MapEntry
 
 public class SpecialEntry
 {
-    // For "extend", {0} = GG1 ExtendMapTimeMinutes.
-    [JsonPropertyName("Title")] public string Title { get; set; } = "";
+    // The row text is vote.extend / vote.novote in lang/*.json.
     // clock | refresh | cancel | check | none
     [JsonPropertyName("Icon")] public string Icon { get; set; } = "none";
 }
