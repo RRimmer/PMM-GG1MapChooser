@@ -92,7 +92,7 @@ The changelog is in [CHANGELOG.md](CHANGELOG.md).
 
 # PMM_GG1MapChooser
 
-<h2><a href="https://genesis-cs.space/menuconstructor/index.html">>>>Более подробная информация на сайте<<<</a></h2>
+<h2 align="center"><a href="https://genesis-cs.space/menuconstructor/menumanager/plugins/">GENESIS-CS.SPACE</a></h2>
 
 Мост от **Rimmer** между [GG1MapChooser](https://github.com/ssypchenko/GG1MapChooser) 1.8.1 и [PanoramaMenuManager](https://github.com/RRimmer/PanoramaMenuManagerCS2) (MenuManagerCS2 1.2.05). GG1MapChooser не меняется: Harmony патчит его WASD-меню в рантайме.
 
